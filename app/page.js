@@ -15,6 +15,195 @@ const colors = {
   white: '#FFFFFF',
 };
 
+// 구글 폼 링크
+const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfOXB8wrXjOh4mFnRkpDMyrw7EalacbddLvEV1VHmaQrEMHXA/viewform?usp=dialog';
+
+// 개인정보처리방침 내용
+const PRIVACY_POLICY = `
+<h2>개인정보처리방침</h2>
+<p><strong>시행일: 2025년 1월 1일</strong></p>
+
+<p>모르포 메디테크(이하 "회사")는 개인정보보호법에 따라 이용자의 개인정보 보호 및 권익을 보호하고 개인정보와 관련한 이용자의 고충을 원활하게 처리할 수 있도록 다음과 같은 처리방침을 두고 있습니다.</p>
+
+<h3>1. 개인정보의 수집 및 이용 목적</h3>
+<p>회사는 다음의 목적을 위해 개인정보를 처리합니다:</p>
+<ul>
+  <li>제품 상담 및 문의 응대</li>
+  <li>제품 구매 및 배송</li>
+  <li>고객 서비스 제공 및 불만 처리</li>
+  <li>마케팅 및 광고 활용 (동의 시)</li>
+</ul>
+
+<h3>2. 수집하는 개인정보 항목</h3>
+<ul>
+  <li>필수항목: 이름, 연락처, 이메일</li>
+  <li>선택항목: 주소, 문의내용</li>
+</ul>
+
+<h3>3. 개인정보의 보유 및 이용 기간</h3>
+<p>회사는 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계법령에 따라 보존할 필요가 있는 경우 일정 기간 보관합니다:</p>
+<ul>
+  <li>계약 또는 청약철회 등에 관한 기록: 5년</li>
+  <li>소비자 불만 또는 분쟁처리에 관한 기록: 3년</li>
+</ul>
+
+<h3>4. 개인정보의 제3자 제공</h3>
+<p>회사는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 이용자의 동의가 있거나 법령에 의해 요구되는 경우에는 예외로 합니다.</p>
+
+<h3>5. 개인정보의 파기</h3>
+<p>회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.</p>
+
+<h3>6. 정보주체의 권리·의무</h3>
+<p>이용자는 언제든지 자신의 개인정보에 대해 열람, 정정, 삭제, 처리정지를 요구할 수 있습니다.</p>
+
+<h3>7. 개인정보 보호책임자</h3>
+<ul>
+  <li>성명: 유병훈</li>
+  <li>연락처: 010-4576-9596</li>
+  <li>이메일: byunghun0501@gmail.com</li>
+</ul>
+
+<h3>8. 개인정보처리방침 변경</h3>
+<p>이 개인정보처리방침은 2025년 1월 1일부터 적용됩니다. 변경사항이 있을 경우 웹사이트를 통해 공지합니다.</p>
+`;
+
+// 이용약관 내용
+const TERMS_OF_SERVICE = `
+<h2>이용약관</h2>
+<p><strong>시행일: 2025년 1월 1일</strong></p>
+
+<h3>제1조 (목적)</h3>
+<p>본 약관은 모르포 메디테크(이하 "회사")가 제공하는 힐매트 관련 서비스(이하 "서비스")의 이용조건 및 절차, 회사와 이용자의 권리, 의무, 책임사항을 규정함을 목적으로 합니다.</p>
+
+<h3>제2조 (약관의 효력 및 변경)</h3>
+<ol>
+  <li>본 약관은 서비스를 이용하고자 하는 모든 이용자에 대하여 그 효력을 발생합니다.</li>
+  <li>회사는 필요한 경우 약관을 변경할 수 있으며, 변경된 약관은 웹사이트에 공지함으로써 효력을 발생합니다.</li>
+</ol>
+
+<h3>제3조 (서비스의 내용)</h3>
+<p>회사가 제공하는 서비스는 다음과 같습니다:</p>
+<ul>
+  <li>힐매트 제품 정보 제공</li>
+  <li>제품 상담 및 문의 서비스</li>
+  <li>제품 구매 및 A/S 서비스</li>
+</ul>
+
+<h3>제4조 (서비스의 중단)</h3>
+<p>회사는 다음 각 호에 해당하는 경우 서비스의 전부 또는 일부를 제한하거나 중단할 수 있습니다:</p>
+<ol>
+  <li>서비스용 설비의 보수 등 공사로 인한 부득이한 경우</li>
+  <li>천재지변, 정전, 서비스 설비의 장애 등 불가항력적인 사유가 있는 경우</li>
+</ol>
+
+<h3>제5조 (이용자의 의무)</h3>
+<p>이용자는 다음 행위를 하여서는 안 됩니다:</p>
+<ul>
+  <li>타인의 정보 도용</li>
+  <li>회사가 게시한 정보의 변경</li>
+  <li>회사의 저작권 등 지적재산권에 대한 침해</li>
+  <li>회사 및 제3자의 명예를 손상시키는 행위</li>
+</ul>
+
+<h3>제6조 (회사의 의무)</h3>
+<ol>
+  <li>회사는 관련 법령을 준수하고, 계속적이고 안정적으로 서비스를 제공하기 위해 노력합니다.</li>
+  <li>회사는 이용자의 개인정보를 보호하기 위해 보안 시스템을 갖추어야 합니다.</li>
+</ol>
+
+<h3>제7조 (면책조항)</h3>
+<ol>
+  <li>회사는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 책임이 면제됩니다.</li>
+  <li>회사는 이용자의 귀책사유로 인한 서비스 이용의 장애에 대하여 책임을 지지 않습니다.</li>
+</ol>
+
+<h3>제8조 (분쟁해결)</h3>
+<p>회사와 이용자 간에 발생한 분쟁에 관한 소송은 대한민국 법을 적용하며, 회사의 본사 소재지를 관할하는 법원을 관할 법원으로 합니다.</p>
+
+<h3>부칙</h3>
+<p>본 약관은 2025년 1월 1일부터 시행됩니다.</p>
+`;
+
+// 법적 고지 팝업 컴포넌트
+const LegalPopup = ({ isOpen, onClose, title, content }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 2000,
+      padding: '20px',
+    }} onClick={onClose}>
+      <div style={{
+        background: 'white',
+        borderRadius: '20px',
+        maxWidth: '700px',
+        width: '100%',
+        maxHeight: '80vh',
+        overflow: 'hidden',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+      }} onClick={(e) => e.stopPropagation()}>
+        {/* 헤더 */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '20px 30px',
+          borderBottom: '1px solid #eee',
+          background: colors.background,
+        }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '700', color: colors.text, margin: 0 }}>{title}</h3>
+          <button
+            onClick={onClose}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: 'none',
+              background: 'white',
+              cursor: 'pointer',
+              fontSize: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: colors.textLight,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            }}
+          >
+            ×
+          </button>
+        </div>
+        {/* 내용 */}
+        <div style={{
+          padding: '30px',
+          overflowY: 'auto',
+          maxHeight: 'calc(80vh - 76px)',
+          fontSize: '14px',
+          lineHeight: '1.8',
+          color: colors.text,
+        }}>
+          <style dangerouslySetInnerHTML={{ __html: `
+            .legal-content h2 { font-size: 22px; margin-bottom: 20px; color: #2E7D6E; }
+            .legal-content h3 { font-size: 16px; margin-top: 24px; margin-bottom: 12px; color: #2D3436; }
+            .legal-content p { margin-bottom: 12px; }
+            .legal-content ul, .legal-content ol { margin-bottom: 12px; padding-left: 24px; }
+            .legal-content li { margin-bottom: 6px; }
+          `}} />
+          <div className="legal-content" dangerouslySetInnerHTML={{ __html: content }} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // GNB 컴포넌트
 const GNB = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -58,16 +247,21 @@ const GNB = () => {
         <span style={{ fontSize: '20px', fontWeight: '700', color: colors.text }}>힐매트</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-        {['제품 소개', '기술', '팀 소개', '문의'].map((item) => (
-          <a key={item} href="#" style={{
+        {[
+          { label: '제품 소개', href: '#product' },
+          { label: '기술', href: '#technology' },
+          { label: '팀 소개', href: '#team' },
+          { label: '문의', href: '#contact' },
+        ].map((item) => (
+          <a key={item.label} href={item.href} style={{
             color: colors.text,
             textDecoration: 'none',
             fontSize: '15px',
             fontWeight: '500',
             transition: 'color 0.2s',
-          }}>{item}</a>
+          }}>{item.label}</a>
         ))}
-        <button style={{
+        <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
           padding: '12px 24px',
           background: colors.primary,
           color: 'white',
@@ -76,7 +270,8 @@ const GNB = () => {
           fontSize: '14px',
           fontWeight: '600',
           cursor: 'pointer',
-        }}>상담 신청</button>
+          textDecoration: 'none',
+        }}>상담 신청</a>
       </div>
     </nav>
   );
@@ -84,7 +279,7 @@ const GNB = () => {
 
 // Hero 섹션
 const HeroSection = () => (
-  <section style={{
+  <section id="product" style={{
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
@@ -100,7 +295,7 @@ const HeroSection = () => (
       alignItems: 'center',
       width: '100%',
     }}>
-      {/* 제품 이미지 영역 */}
+      {/* 제품 이미지 영역 - 힐매트 접이식 구조 시각화 */}
       <div style={{
         position: 'relative',
         display: 'flex',
@@ -108,8 +303,8 @@ const HeroSection = () => (
         alignItems: 'center',
       }}>
         <div style={{
-          width: '480px',
-          height: '400px',
+          width: '520px',
+          height: '420px',
           background: 'linear-gradient(145deg, #e8f5f3 0%, #d4ede8 100%)',
           borderRadius: '24px',
           display: 'flex',
@@ -119,54 +314,217 @@ const HeroSection = () => (
           boxShadow: '0 20px 60px rgba(46, 125, 110, 0.15)',
           position: 'relative',
           overflow: 'hidden',
+          padding: '40px',
         }}>
-          {/* 매트리스 시각화 */}
+          {/* 힐매트 접이식 구조 - 애니메이션 */}
           <div style={{
-            width: '320px',
-            height: '200px',
-            background: 'linear-gradient(180deg, #3d9d8a 0%, #2E7D6E 100%)',
-            borderRadius: '12px',
             position: 'relative',
-            transform: 'perspective(800px) rotateX(20deg) rotateY(-10deg)',
-            boxShadow: '0 30px 60px rgba(0,0,0,0.2)',
+            width: '400px',
+            height: '280px',
           }}>
-            {/* 에어셀 표현 */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '8px',
-              padding: '20px',
-              height: '100%',
-              boxSizing: 'border-box',
-            }}>
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} style={{
-                  background: 'rgba(255,255,255,0.2)',
-                  borderRadius: '8px',
-                  animation: `pulse ${1.5 + i * 0.3}s ease-in-out infinite`,
-                }} />
-              ))}
-            </div>
-            {/* 각도 표시 */}
+            {/* 베이스 프레임 (하판) */}
             <div style={{
               position: 'absolute',
-              right: '-60px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: colors.secondary,
-              color: 'white',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              fontSize: '14px',
-              fontWeight: '700',
-            }}>70°</div>
+              bottom: '30px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '340px',
+              height: '25px',
+              background: 'linear-gradient(180deg, #4a4a4a 0%, #333 100%)',
+              borderRadius: '4px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            }} />
+
+            {/* 왼쪽 에어셀 - 삼각 기둥 (팽창) - 상판 좌측 끝과 밀착 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '55px',
+              left: '40px',
+              width: '150px',
+              height: '160px',
+              background: 'linear-gradient(to right, #FF8C42 0%, #e67a35 100%)',
+              clipPath: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+              boxShadow: '0 4px 15px rgba(255, 140, 66, 0.4)',
+              animation: 'airCellInflate 4s ease-in-out infinite',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingBottom: '8px',
+            }}>
+              <span style={{
+                color: 'white',
+                fontSize: '11px',
+                fontWeight: '700',
+              }}>AIR</span>
+            </div>
+
+            {/* 오른쪽 에어셀 - 평평 (기본 높이와 동일) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '55px',
+              right: '40px',
+              width: '150px',
+              height: '160px',
+              background: 'linear-gradient(135deg, #5BA3C6 0%, #4a8fb3 100%)',
+              clipPath: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+              boxShadow: '0 2px 8px rgba(91, 163, 198, 0.3)',
+            }} />
+
+            {/* 접이식 상판 - 왼쪽 날개 (에어셀 위에 밀착) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '95px',
+              left: '40px',
+              width: '150px',
+              height: '12px',
+              transformOrigin: 'right center',
+              animation: 'boardTilt 4s ease-in-out infinite',
+            }}>
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(180deg, #2E7D6E 0%, #256459 100%)',
+                borderRadius: '6px 2px 2px 6px',
+                boxShadow: '0 4px 15px rgba(46, 125, 110, 0.4)',
+              }} />
+            </div>
+
+            {/* 접이식 상판 - 오른쪽 날개 (평평, 오른쪽 에어셀 위) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '95px',
+              right: '40px',
+              width: '150px',
+              height: '12px',
+              background: 'linear-gradient(180deg, #3d9d8a 0%, #2E7D6E 100%)',
+              borderRadius: '2px 6px 6px 2px',
+              transformOrigin: 'left center',
+              boxShadow: '0 2px 10px rgba(46, 125, 110, 0.2)',
+            }} />
+
+            {/* 환자 실루엣 - 힌지 중앙에 위치, 양쪽 상판 커버 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '107px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              transformOrigin: 'right center',
+              animation: 'patientTilt 4s ease-in-out infinite',
+              zIndex: 5,
+            }}>
+              {/* 몸통 - 좌우로 긴 직사각형, 둥근 모서리(어깨) */}
+              <div style={{
+                width: '280px',
+                height: '50px',
+                background: 'linear-gradient(180deg, #8fb5b0 0%, #6a9590 100%)',
+                borderRadius: '25px',
+                position: 'relative',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              }}>
+                {/* 머리 - 몸통 중앙에 겹쳐진 원 */}
+                <div style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}>
+                  {/* 얼굴 (위쪽, 밝은 색) */}
+                  <div style={{
+                    width: '100%',
+                    height: '50%',
+                    background: '#f0dfd0',
+                  }} />
+                  {/* 머리카락 (아래쪽, 어두운 색) */}
+                  <div style={{
+                    width: '100%',
+                    height: '50%',
+                    background: '#3d2b1f',
+                  }} />
+                </div>
+              </div>
+            </div>
+
+            {/* 중앙 힌지 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '90px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '20px',
+              height: '22px',
+              background: 'linear-gradient(180deg, #666 0%, #444 100%)',
+              borderRadius: '4px',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              zIndex: 10,
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '10px',
+                height: '10px',
+                background: '#333',
+                borderRadius: '50%',
+              }} />
+            </div>
+
+            {/* 70도 각도 표시 */}
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              left: '20px',
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: '12px',
+              padding: '12px 16px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              zIndex: 20,
+            }}>
+              <div style={{ fontSize: '12px', color: colors.textLight, marginBottom: '4px' }}>최대 기울기</div>
+              <div style={{ fontSize: '28px', fontWeight: '700', color: colors.secondary }}>70°</div>
+            </div>
+
+            {/* 상태 표시 */}
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '12px',
+              }}>
+                <div style={{ width: '12px', height: '12px', background: colors.secondary, borderRadius: '3px' }} />
+                <span style={{ color: colors.text }}>에어셀 팽창</span>
+              </div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '12px',
+              }}>
+                <div style={{ width: '12px', height: '12px', background: colors.primary, borderRadius: '3px' }} />
+                <span style={{ color: colors.text }}>상판 연동</span>
+              </div>
+            </div>
           </div>
+
           <p style={{
-            marginTop: '30px',
+            marginTop: '16px',
             color: colors.primary,
             fontSize: '14px',
             fontWeight: '600',
-          }}>자동 자세 변환 중...</p>
+          }}>삼각 에어셀 팽창 → 상판 밀착 상승 → 자동 체위 변환</p>
         </div>
       </div>
 
@@ -193,7 +551,7 @@ const HeroSection = () => (
           <strong style={{ color: colors.primary }}>힐매트</strong>
         </p>
         <div style={{ display: 'flex', gap: '16px', marginBottom: '40px' }}>
-          <button style={{
+          <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
             padding: '18px 36px',
             background: colors.primary,
             color: 'white',
@@ -204,8 +562,9 @@ const HeroSection = () => (
             cursor: 'pointer',
             boxShadow: '0 8px 24px rgba(46, 125, 110, 0.3)',
             transition: 'transform 0.2s, box-shadow 0.2s',
-          }}>제품 상담 신청하기</button>
-          <button style={{
+            textDecoration: 'none',
+          }}>제품 상담 신청하기</a>
+          <a href="#video" style={{
             padding: '18px 36px',
             background: 'transparent',
             color: colors.primary,
@@ -217,11 +576,12 @@ const HeroSection = () => (
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-          }}>제품 영상 보기</button>
+            textDecoration: 'none',
+          }}>제품 동작 과정 보기</a>
         </div>
         {/* 신뢰 배지 */}
-        <div style={{ display: 'flex', gap: '16px' }}>
-          {['IP 디딤돌 특허 프로그램', '충남대학교 창업동아리'].map((badge) => (
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {['IP 디딤돌 특허 프로그램', '충남대 RISE 창업동아리', '프로토타입 개발 완료'].map((badge) => (
             <span key={badge} style={{
               padding: '8px 16px',
               background: 'rgba(46, 125, 110, 0.1)',
@@ -241,7 +601,7 @@ const HeroSection = () => (
 const ProblemSection = () => {
   const stats = [
     { icon: '📈', value: '22%', label: '환자 증가', desc: '21,700 → 26,600명 (3년간)' },
-    { icon: '👨‍⚕️', value: '6.9명', label: '간호사 부족', desc: 'OECD 평균 9명 대비' },
+    { icon: '👨‍⚕️', value: '6.9명', label: '간호사 수', desc: 'OECD 평균 9명 대비 부족' },
     { icon: '💰', value: '370만원', label: '월 간병비', desc: '가정 간병인 기준' },
   ];
 
@@ -303,42 +663,393 @@ const ProblemSection = () => {
 
         {/* 인용문 */}
         <div style={{
-          maxWidth: '800px',
-          margin: '0 auto',
-          background: 'white',
-          borderRadius: '20px',
-          padding: '48px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
-          position: 'relative',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '24px',
         }}>
           <div style={{
-            position: 'absolute',
-            top: '24px',
-            left: '32px',
-            fontSize: '64px',
-            color: colors.primary,
-            opacity: 0.2,
-            lineHeight: 1,
-          }}>&ldquo;</div>
-          <p style={{
-            fontSize: '22px',
-            fontStyle: 'italic',
-            color: colors.text,
-            lineHeight: '1.7',
-            marginBottom: '24px',
-            paddingLeft: '20px',
+            background: 'white',
+            borderRadius: '20px',
+            padding: '32px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
           }}>
-            남편이 1시간마다 자세를 바꿔달라고 해서<br />
-            이제는 <span style={{ color: colors.secondary, fontWeight: '600' }}>어깨랑 손목이 너무 아파요.</span>
-          </p>
-          <p style={{
-            fontSize: '16px',
-            color: colors.textLight,
-            paddingLeft: '20px',
-          }}>— 60대, 전신 마비 환자 10년 간병 중</p>
+            <div style={{ fontSize: '14px', color: colors.textMuted, marginBottom: '12px' }}>50대, 80대 노모 간병 중</div>
+            <p style={{ fontSize: '18px', color: colors.text, lineHeight: '1.6' }}>
+              &ldquo;(어머니의) 붉은 상처를 대수롭지 않게 생각했다가<br />
+              <span style={{ color: colors.secondary, fontWeight: '600' }}>3기 욕창으로 번져서 결국 수술했어요.&rdquo;</span>
+            </p>
+          </div>
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '32px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+          }}>
+            <div style={{ fontSize: '14px', color: colors.textMuted, marginBottom: '12px' }}>60대, 전신 마비 환자 10년 간병 중</div>
+            <p style={{ fontSize: '18px', color: colors.text, lineHeight: '1.6' }}>
+              &ldquo;남편(환자)이 1시간마다 자세를 바꿔달라고 해서<br />
+              이제는 <span style={{ color: colors.secondary, fontWeight: '600' }}>어깨랑 손목이 너무 아파요.&rdquo;</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>
+  );
+};
+
+// 단계별 캐러셀 컴포넌트 - HeroSection 애니메이션 값 기반
+const StepCarousel = ({ steps }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const goToPrev = () => {
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
+  };
+
+  const item = steps[currentStep];
+
+  return (
+    <div style={{
+      background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
+      borderRadius: '24px',
+      padding: '50px',
+      marginBottom: '60px',
+    }}>
+      <h3 style={{ fontSize: '24px', fontWeight: '700', color: colors.text, marginBottom: '30px', textAlign: 'center' }}>
+        힐매트 구조 & 작동 원리
+      </h3>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px',
+        maxWidth: '1000px',
+        margin: '0 auto',
+      }}>
+        {/* 왼쪽 화살표 */}
+        <button
+          onClick={goToPrev}
+          style={{
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            border: 'none',
+            background: 'white',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '24px',
+            color: colors.primary,
+            flexShrink: 0,
+            transition: 'transform 0.2s, box-shadow 0.2s',
+          }}
+        >
+          ←
+        </button>
+
+        {/* 카드 */}
+        <div style={{
+          flex: 1,
+          background: 'white',
+          borderRadius: '20px',
+          padding: '32px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+        }}>
+          {/* 단계 표시 */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '20px',
+          }}>
+            <div style={{
+              display: 'inline-block',
+              background: item.color,
+              color: 'white',
+              padding: '6px 14px',
+              borderRadius: '12px',
+              fontSize: '13px',
+              fontWeight: '700',
+            }}>STEP {item.step}</div>
+            <h4 style={{ fontSize: '18px', fontWeight: '700', color: colors.text }}>{item.title}</h4>
+          </div>
+
+          {/* 다이어그램 + 실제 이미지 2단 레이아웃 */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '20px',
+            marginBottom: '20px',
+          }}>
+
+          {/* 시각화 다이어그램 - HeroSection과 동일한 구조 */}
+          <div style={{
+            position: 'relative',
+            height: '220px',
+            background: colors.background,
+            borderRadius: '12px',
+            marginBottom: '20px',
+            overflow: 'hidden',
+          }}>
+            {/* 베이스 프레임 (하판) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '20px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '280px',
+              height: '18px',
+              background: 'linear-gradient(180deg, #4a4a4a 0%, #333 100%)',
+              borderRadius: '3px',
+              boxShadow: '0 3px 8px rgba(0,0,0,0.3)',
+            }} />
+
+            {/* 왼쪽 에어셀 - 삼각 기둥 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '38px',
+              left: 'calc(50% - 140px)',
+              width: '125px',
+              height: '130px',
+              background: `linear-gradient(to right, ${colors.secondary} 0%, #e67a35 100%)`,
+              clipPath: item.leftAirCell,
+              boxShadow: '0 3px 10px rgba(255, 140, 66, 0.4)',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingBottom: '6px',
+              transition: 'clip-path 0.5s ease',
+            }}>
+              <span style={{ color: 'white', fontSize: '10px', fontWeight: '700' }}>AIR</span>
+            </div>
+
+            {/* 오른쪽 에어셀 - 평평 (고정) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '38px',
+              right: 'calc(50% - 140px)',
+              width: '125px',
+              height: '130px',
+              background: `linear-gradient(135deg, ${colors.accent} 0%, #4a8fb3 100%)`,
+              clipPath: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+              boxShadow: '0 2px 6px rgba(91, 163, 198, 0.3)',
+            }} />
+
+            {/* 왼쪽 상판 - 에어셀 위에 밀착 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '70px',
+              left: 'calc(50% - 140px)',
+              width: '125px',
+              height: '10px',
+              transformOrigin: 'right center',
+              transform: `rotate(${item.leftBoardRotate})`,
+              transition: 'transform 0.5s ease',
+            }}>
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
+                borderRadius: '5px 2px 2px 5px',
+                boxShadow: '0 3px 10px rgba(46, 125, 110, 0.4)',
+              }} />
+            </div>
+
+            {/* 오른쪽 상판 - 평평 (고정) */}
+            <div style={{
+              position: 'absolute',
+              bottom: '70px',
+              right: 'calc(50% - 140px)',
+              width: '125px',
+              height: '10px',
+              background: `linear-gradient(180deg, #3d9d8a 0%, ${colors.primary} 100%)`,
+              borderRadius: '2px 5px 5px 2px',
+              boxShadow: '0 2px 8px rgba(46, 125, 110, 0.2)',
+            }} />
+
+            {/* 중앙 힌지 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '65px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '16px',
+              height: '18px',
+              background: 'linear-gradient(180deg, #666 0%, #444 100%)',
+              borderRadius: '3px',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
+              zIndex: 10,
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '8px',
+                height: '8px',
+                background: '#333',
+                borderRadius: '50%',
+              }} />
+            </div>
+
+            {/* 환자 - 힌지 중앙 위치 */}
+            <div style={{
+              position: 'absolute',
+              bottom: '80px',
+              left: '50%',
+              transform: `translateX(-50%) rotate(${item.patientRotate})`,
+              transformOrigin: 'right center',
+              zIndex: 5,
+              transition: 'transform 0.5s ease',
+            }}>
+              {/* 몸통 */}
+              <div style={{
+                width: '230px',
+                height: '40px',
+                background: 'linear-gradient(180deg, #8fb5b0 0%, #6a9590 100%)',
+                borderRadius: '20px',
+                position: 'relative',
+                boxShadow: '0 3px 10px rgba(0,0,0,0.15)',
+              }}>
+                {/* 머리 */}
+                <div style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                }}>
+                  {/* 얼굴 (위쪽, 밝은 색) */}
+                  <div style={{ width: '100%', height: '50%', background: '#f0dfd0' }} />
+                  {/* 머리카락 (아래쪽, 어두운 색) */}
+                  <div style={{ width: '100%', height: '50%', background: '#3d2b1f' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* 각도 표시 (STEP 3, 4에서만) */}
+            {(item.step === '3' || item.step === '4') && (
+              <div style={{
+                position: 'absolute',
+                top: '12px',
+                left: '12px',
+                background: 'rgba(255,255,255,0.95)',
+                borderRadius: '8px',
+                padding: '8px 12px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                zIndex: 15,
+              }}>
+                <div style={{ fontSize: '10px', color: colors.textLight }}>최대 기울기</div>
+                <div style={{ fontSize: '18px', fontWeight: '700', color: colors.secondary }}>70°</div>
+              </div>
+            )}
+          </div>
+
+            {/* 실제 힐매트 이미지 */}
+            <div style={{
+              position: 'relative',
+              height: '220px',
+              background: '#f8f9fa',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <img
+                src={item.image}
+                alt={item.title}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = '<div style="text-align:center;color:#999;font-size:14px;">이미지 로딩 중...</div>';
+                }}
+              />
+              <div style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                background: 'rgba(0,0,0,0.6)',
+                color: 'white',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                fontSize: '11px',
+              }}>
+                실제 제품 이미지
+              </div>
+            </div>
+          </div>
+
+          {/* 설명 텍스트 */}
+          <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7', textAlign: 'center' }}>{item.desc}</p>
+        </div>
+
+        {/* 오른쪽 화살표 */}
+        <button
+          onClick={goToNext}
+          style={{
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            border: 'none',
+            background: colors.primary,
+            boxShadow: '0 4px 12px rgba(46, 125, 110, 0.3)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '24px',
+            color: 'white',
+            flexShrink: 0,
+            transition: 'transform 0.2s, box-shadow 0.2s',
+          }}
+        >
+          →
+        </button>
+      </div>
+
+      {/* 단계 인디케이터 */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '10px',
+        marginTop: '30px',
+      }}>
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentStep(i)}
+            style={{
+              width: i === currentStep ? '32px' : '10px',
+              height: '10px',
+              borderRadius: '5px',
+              border: 'none',
+              background: i === currentStep ? colors.primary : '#ccc',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}
+          />
+        ))}
+      </div>
+
+      <p style={{ textAlign: 'center', fontSize: '13px', color: colors.textMuted, marginTop: '16px' }}>
+        화살표 버튼을 눌러 단계별 작동 원리를 확인하세요
+      </p>
+    </div>
   );
 };
 
@@ -362,8 +1073,63 @@ const SolutionSection = () => {
     },
   ];
 
+  // 각 단계별 시각화 설정 - HeroSection 애니메이션 값 기반
+  // HeroSection: 에어셀 clipPath: 75% → 5%, 상판: 0deg → 40deg, 환자: 0deg → 20deg
+  const steps = [
+    {
+      step: '1',
+      title: '평평한 상태',
+      desc: '환자가 힐매트 위에 누워있는 초기 상태입니다. 양쪽 에어셀이 동일한 높이를 유지합니다.',
+      color: colors.textLight,
+      image: '/images/healmat1.jpg',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+      leftBoardRotate: '0deg',
+      patientRotate: '0deg',
+    },
+    {
+      step: '2',
+      title: '에어셀 팽창 시작',
+      desc: '한쪽 에어셀에 공기가 주입되기 시작하여 삼각 기둥 형태로 팽창합니다.',
+      color: colors.secondary,
+      image: '/images/healmat2.png',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 40%)',
+      leftBoardRotate: '20deg',
+      patientRotate: '10deg',
+    },
+    {
+      step: '3',
+      title: '상판 기울어짐',
+      desc: '팽창한 에어셀이 접이식 상판을 밀어올려 최대 70°까지 기울어집니다.',
+      color: colors.primary,
+      image: '/images/healmat2.png',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
+      leftBoardRotate: '40deg',
+      patientRotate: '20deg',
+    },
+    {
+      step: '4',
+      title: '체위 변환 완료',
+      desc: '기울어진 상판으로 인해 환자가 자연스럽게 옆으로 돌아눕게 됩니다.',
+      color: colors.accent,
+      image: '/images/healmat3.png',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
+      leftBoardRotate: '40deg',
+      patientRotate: '20deg',
+    },
+    {
+      step: '5',
+      title: '원위치 복귀',
+      desc: '공기가 빠지면서 상판이 평평하게 돌아오고, 반대쪽으로 동일한 과정이 반복됩니다.',
+      color: colors.primary,
+      image: '/images/healmat1.jpg',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+      leftBoardRotate: '0deg',
+      patientRotate: '0deg',
+    },
+  ];
+
   return (
-    <section style={{
+    <section id="technology" style={{
       padding: '120px 60px',
       background: 'white',
     }}>
@@ -386,64 +1152,8 @@ const SolutionSection = () => {
           오리가미 기술 기반의 혁신적인 욕창예방 솔루션
         </p>
 
-        {/* 제품 뷰어 */}
-        <div style={{
-          background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
-          borderRadius: '24px',
-          padding: '60px',
-          marginBottom: '60px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <div style={{
-            width: '600px',
-            height: '350px',
-            background: 'linear-gradient(145deg, #f0f8f6 0%, #d4ede8 100%)',
-            borderRadius: '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}>
-            {/* 3D 매트리스 표현 */}
-            <div style={{
-              width: '400px',
-              height: '180px',
-              background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
-              borderRadius: '16px',
-              position: 'relative',
-              transform: 'perspective(1000px) rotateX(15deg)',
-              boxShadow: '0 40px 80px rgba(0,0,0,0.2)',
-            }}>
-              <div style={{
-                position: 'absolute',
-                inset: '16px',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '12px',
-              }}>
-                {[0, 1, 2, 3].map((i) => (
-                  <div key={i} style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '12px',
-                    color: 'rgba(255,255,255,0.6)',
-                  }}>셀 {i + 1}</div>
-                ))}
-              </div>
-            </div>
-            <p style={{
-              marginTop: '24px',
-              fontSize: '14px',
-              color: colors.textLight,
-            }}>드래그하여 360° 회전</p>
-          </div>
-        </div>
+        {/* 힐매트 구조 & 작동 원리 - 캐러셀 */}
+        <StepCarousel steps={steps} />
 
         {/* 기능 카드 */}
         <div style={{
@@ -489,6 +1199,120 @@ const SolutionSection = () => {
   );
 };
 
+// 테스트 결과 섹션 (새로 추가)
+const TestResultSection = () => {
+  const tests = [
+    { weight: '45kg', angle: '70°+', status: '성공' },
+    { weight: '77kg', angle: '70°+', status: '성공' },
+    { weight: '95kg', angle: '70°+', status: '성공' },
+  ];
+
+  return (
+    <section style={{
+      padding: '120px 60px',
+      background: `linear-gradient(180deg, white 0%, ${colors.background} 100%)`,
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 style={{
+          fontSize: '40px',
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: '20px',
+          color: colors.text,
+        }}>
+          <span style={{ color: colors.primary }}>프로토타입</span> 테스트 완료
+        </h2>
+        <p style={{
+          fontSize: '18px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: '60px',
+        }}>
+          다양한 체중의 사용자를 대상으로 실제 테스트를 진행했습니다
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '32px',
+          marginBottom: '60px',
+        }}>
+          {tests.map((test, i) => (
+            <div key={i} style={{
+              background: 'white',
+              borderRadius: '20px',
+              padding: '40px',
+              textAlign: 'center',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+              border: `2px solid ${colors.primary}`,
+            }}>
+              <div style={{
+                width: '100px',
+                height: '100px',
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 20px',
+              }}>
+                <span style={{ fontSize: '28px', fontWeight: '700', color: 'white' }}>{test.weight}</span>
+              </div>
+              <div style={{
+                fontSize: '48px',
+                fontWeight: '700',
+                color: colors.primary,
+                marginBottom: '8px',
+              }}>{test.angle}</div>
+              <div style={{
+                display: 'inline-block',
+                padding: '8px 20px',
+                background: 'rgba(46, 125, 110, 0.1)',
+                borderRadius: '20px',
+                color: colors.primary,
+                fontWeight: '600',
+              }}>각도 전환 {test.status}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{
+          background: 'white',
+          borderRadius: '20px',
+          padding: '40px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+        }}>
+          <h3 style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            color: colors.text,
+            marginBottom: '24px',
+            textAlign: 'center',
+          }}>테스트 검증 항목</h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '20px',
+          }}>
+            {[
+              { icon: '✅', title: '내구성', desc: '각 무게별 내구도 확인' },
+              { icon: '✅', title: '제어 정밀도', desc: '4개 에어셀 독립 제어' },
+              { icon: '✅', title: '각도 전환', desc: '모든 무게 70°+ 달성' },
+              { icon: '✅', title: '안정성', desc: '안정적/유동적 자세 유지' },
+            ].map((item, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>{item.icon}</div>
+                <div style={{ fontSize: '16px', fontWeight: '600', color: colors.text, marginBottom: '4px' }}>{item.title}</div>
+                <div style={{ fontSize: '13px', color: colors.textLight }}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // How It Works 섹션
 const HowItWorksSection = () => {
   const steps = [
@@ -501,7 +1325,7 @@ const HowItWorksSection = () => {
   return (
     <section style={{
       padding: '120px 60px',
-      background: `linear-gradient(180deg, white 0%, ${colors.background} 100%)`,
+      background: colors.background,
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
@@ -577,31 +1401,223 @@ const HowItWorksSection = () => {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+};
 
-        {/* 비디오 섹션 */}
-        <div style={{
-          marginTop: '80px',
-          background: colors.text,
-          borderRadius: '24px',
-          padding: '80px',
+// 제품 동작 과정 섹션
+const VideoSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [
+    { src: '/images/healmat1.jpg', title: '평평한 상태', desc: '환자가 힐매트 위에 누워있는 초기 상태' },
+    { src: '/images/healmat2.png', title: '에어셀 팽창', desc: '한쪽 에어셀이 팽창하며 상판이 기울어지는 상태' },
+    { src: '/images/healmat3.png', title: '체위 변환 완료', desc: '최대 70도까지 기울어져 체위 변환이 완료된 상태' },
+  ];
+
+  return (
+    <section id="video" style={{
+      padding: '120px 60px',
+      background: 'white',
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 style={{
+          fontSize: '40px',
+          fontWeight: '700',
           textAlign: 'center',
+          marginBottom: '20px',
+          color: colors.text,
+        }}>힐매트 <span style={{ color: colors.primary }}>동작 과정</span></h2>
+        <p style={{
+          fontSize: '18px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: '60px',
+        }}>실제 힐매트가 작동하는 모습을 확인해보세요</p>
+
+        {/* 이미지 캐러셀 */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '900px',
+          margin: '0 auto',
         }}>
           <div style={{
-            width: '80px',
-            height: '80px',
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px',
-            cursor: 'pointer',
-            border: '2px solid rgba(255,255,255,0.3)',
+            gap: '20px',
           }}>
-            <span style={{ fontSize: '32px', color: 'white', marginLeft: '4px' }}>▶</span>
+            {/* 왼쪽 화살표 */}
+            <button
+              onClick={() => setCurrentImage((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
+              style={{
+                width: '50px',
+                height: '50px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'white',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '24px',
+                color: colors.primary,
+                flexShrink: 0,
+              }}
+            >
+              ←
+            </button>
+
+            {/* 이미지 컨테이너 */}
+            <div style={{
+              flex: 1,
+              aspectRatio: '16/9',
+              background: 'linear-gradient(145deg, #e8f5f3 0%, #d4ede8 100%)',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 60px rgba(46, 125, 110, 0.15)',
+              position: 'relative',
+            }}>
+              <img
+                src={images[currentImage].src}
+                alt={images[currentImage].title}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              {/* 이미지 로드 실패 시 플레이스홀더 */}
+              <div style={{
+                display: 'none',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                color: colors.primary,
+              }}>
+                <div style={{ fontSize: '60px', marginBottom: '16px' }}>🛏️</div>
+                <p style={{ fontSize: '16px', fontWeight: '600' }}>{images[currentImage].title}</p>
+              </div>
+
+              {/* 이미지 캡션 */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                padding: '40px 30px 30px',
+                color: 'white',
+              }}>
+                <div style={{
+                  display: 'inline-block',
+                  background: colors.primary,
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  fontSize: '13px',
+                  fontWeight: '700',
+                  marginBottom: '10px',
+                }}>
+                  {currentImage + 1} / {images.length}
+                </div>
+                <h3 style={{ fontSize: '22px', fontWeight: '700', marginBottom: '8px' }}>
+                  {images[currentImage].title}
+                </h3>
+                <p style={{ fontSize: '15px', opacity: 0.9 }}>
+                  {images[currentImage].desc}
+                </p>
+              </div>
+            </div>
+
+            {/* 오른쪽 화살표 */}
+            <button
+              onClick={() => setCurrentImage((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
+              style={{
+                width: '50px',
+                height: '50px',
+                borderRadius: '50%',
+                border: 'none',
+                background: colors.primary,
+                boxShadow: '0 4px 12px rgba(46, 125, 110, 0.3)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '24px',
+                color: 'white',
+                flexShrink: 0,
+              }}
+            >
+              →
+            </button>
           </div>
-          <p style={{ color: 'white', fontSize: '18px', fontWeight: '500' }}>실제 작동 영상 보기</p>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginTop: '8px' }}>45kg, 77kg, 95kg 체중별 테스트 영상</p>
+
+          {/* 인디케이터 */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '10px',
+            marginTop: '24px',
+          }}>
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentImage(i)}
+                style={{
+                  width: i === currentImage ? '32px' : '10px',
+                  height: '10px',
+                  borderRadius: '5px',
+                  border: 'none',
+                  background: i === currentImage ? colors.primary : '#ccc',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '24px',
+          marginTop: '60px',
+        }}>
+          {[
+            { icon: '🔄', title: '자동 자세 전환', desc: '70도 이상 각도로 완전한 체위 변경' },
+            { icon: '🎯', title: '정밀 제어', desc: '4개 에어셀 독립 제어 시스템' },
+            { icon: '⏱️', title: '2시간 주기', desc: '의료 가이드라인 준수 자동 전환' },
+          ].map((item, i) => (
+            <div key={i} style={{
+              background: colors.background,
+              borderRadius: '16px',
+              padding: '32px',
+              textAlign: 'center',
+            }}>
+              <div style={{ fontSize: '40px', marginBottom: '16px' }}>{item.icon}</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: '700',
+                color: colors.text,
+                marginBottom: '8px',
+              }}>{item.title}</h3>
+              <p style={{
+                fontSize: '14px',
+                color: colors.textLight,
+                lineHeight: '1.6',
+              }}>{item.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -612,15 +1628,15 @@ const HowItWorksSection = () => {
 const ComparisonSection = () => {
   const data = [
     { feature: '가격대', a: '7만원', b: '35만원', c: '80만원', d: '협의' },
-    { feature: '내구성', a: '❌', b: '✅', c: '✅', d: '✅' },
-    { feature: '범용성', a: '✅', b: '✅', c: '❌', d: '✅' },
-    { feature: '자세 전환', a: '❌', b: '❌', c: '△', d: '✅ 70°' },
+    { feature: '내구성', a: '❌ PVC 원단', b: '✅ TPU 원단', c: '✅ CNC 정밀가공', d: '✅ TPU, PC 소재' },
+    { feature: '범용성', a: '✅', b: '✅', c: '❌ 병원 사용불가', d: '✅ 병원 침대 규격' },
+    { feature: '자세 전환', a: '❌', b: '❌', c: '△ 미미한 각도', d: '✅ 70° 이상' },
   ];
 
   return (
     <section style={{
       padding: '120px 60px',
-      background: colors.background,
+      background: 'white',
     }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <h2 style={{
@@ -638,14 +1654,14 @@ const ComparisonSection = () => {
         }}>경쟁 제품과의 명확한 차별점</p>
 
         <div style={{
-          background: 'white',
+          background: colors.background,
           borderRadius: '20px',
           overflow: 'hidden',
           boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
         }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: colors.background }}>
+              <tr style={{ background: 'white' }}>
                 <th style={{ padding: '20px', textAlign: 'left', fontWeight: '600' }}>비교 항목</th>
                 <th style={{ padding: '20px', textAlign: 'center', fontWeight: '500', color: colors.textLight }}>일반 교대부양</th>
                 <th style={{ padding: '20px', textAlign: 'center', fontWeight: '500', color: colors.textLight }}>TPU 교대부양</th>
@@ -654,24 +1670,24 @@ const ComparisonSection = () => {
                   padding: '20px',
                   textAlign: 'center',
                   fontWeight: '700',
-                  color: colors.primary,
-                  background: `rgba(46, 125, 110, 0.1)`,
+                  color: 'white',
+                  background: colors.primary,
                 }}>힐매트</th>
               </tr>
             </thead>
             <tbody>
               {data.map((row, i) => (
                 <tr key={i} style={{ borderTop: '1px solid #eee' }}>
-                  <td style={{ padding: '20px', fontWeight: '600' }}>{row.feature}</td>
-                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight }}>{row.a}</td>
-                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight }}>{row.b}</td>
-                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight }}>{row.c}</td>
+                  <td style={{ padding: '20px', fontWeight: '600', background: 'white' }}>{row.feature}</td>
+                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight, background: 'white' }}>{row.a}</td>
+                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight, background: 'white' }}>{row.b}</td>
+                  <td style={{ padding: '20px', textAlign: 'center', color: colors.textLight, background: 'white' }}>{row.c}</td>
                   <td style={{
                     padding: '20px',
                     textAlign: 'center',
                     fontWeight: '700',
                     color: colors.primary,
-                    background: `rgba(46, 125, 110, 0.05)`,
+                    background: `rgba(46, 125, 110, 0.1)`,
                   }}>{row.d}</td>
                 </tr>
               ))}
@@ -688,6 +1704,178 @@ const ComparisonSection = () => {
         }}>
           &ldquo;확실한 자세 전환, <span style={{ color: colors.primary }}>확실한 욕창 예방</span>&rdquo;
         </p>
+      </div>
+    </section>
+  );
+};
+
+// 비즈니스 모델 섹션 (새로 추가)
+const BusinessModelSection = () => {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      background: colors.background,
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 style={{
+          fontSize: '40px',
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: '20px',
+          color: colors.text,
+        }}>
+          <span style={{ color: colors.primary }}>비즈니스</span> 모델
+        </h2>
+        <p style={{
+          fontSize: '18px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: '60px',
+        }}>
+          복지용구 인증을 통한 B2C/B2B 사업화 전략
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '32px',
+          marginBottom: '60px',
+        }}>
+          {/* B2C */}
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '40px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+          }}>
+            <div style={{
+              display: 'inline-block',
+              padding: '8px 16px',
+              background: colors.primary,
+              color: 'white',
+              borderRadius: '20px',
+              fontSize: '14px',
+              fontWeight: '600',
+              marginBottom: '20px',
+            }}>B2C</div>
+            <h3 style={{ fontSize: '24px', fontWeight: '700', color: colors.text, marginBottom: '16px' }}>
+              가정 간병 보호자/환자
+            </h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {[
+                '복지용구 인증으로 장기요양급여 지원',
+                '소비자 구매 금전적 부담 감소',
+                '의료기기 판매업체 유통망 확보',
+              ].map((item, i) => (
+                <li key={i} style={{
+                  padding: '12px 0',
+                  borderBottom: i < 2 ? '1px solid #eee' : 'none',
+                  color: colors.textLight,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}>
+                  <span style={{ color: colors.primary }}>✓</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* B2B */}
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '40px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+          }}>
+            <div style={{
+              display: 'inline-block',
+              padding: '8px 16px',
+              background: colors.secondary,
+              color: 'white',
+              borderRadius: '20px',
+              fontSize: '14px',
+              fontWeight: '600',
+              marginBottom: '20px',
+            }}>B2B</div>
+            <h3 style={{ fontSize: '24px', fontWeight: '700', color: colors.text, marginBottom: '16px' }}>
+              종합/대학/재활 병원
+            </h3>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {[
+                '고객만족도 및 평가표 기반 영업',
+                '대전/군산 의료기관 네트워크 활용',
+                '병원 침대 규격에 맞춘 제품 설계',
+              ].map((item, i) => (
+                <li key={i} style={{
+                  padding: '12px 0',
+                  borderBottom: i < 2 ? '1px solid #eee' : 'none',
+                  color: colors.textLight,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}>
+                  <span style={{ color: colors.secondary }}>✓</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* 복지용구 인증 로드맵 */}
+        <div style={{
+          background: 'white',
+          borderRadius: '20px',
+          padding: '40px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+        }}>
+          <h3 style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            textAlign: 'center',
+            marginBottom: '40px',
+            color: colors.text,
+          }}>복지용구 인증 프로세스</h3>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: '24px',
+              left: '10%',
+              right: '10%',
+              height: '4px',
+              background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+              borderRadius: '2px',
+            }} />
+            {[
+              { year: '2025', title: 'SOP 품질 테스트', icon: '📋' },
+              { year: '2026', title: 'GMP 심사', icon: '🏭' },
+              { year: '2026', title: 'KTL 성능 시험', icon: '🔬' },
+              { year: '2026', title: '의료기기 인증', icon: '✅' },
+              { year: '2027', title: '복지용구 등록', icon: '🏥' },
+            ].map((step, i) => (
+              <div key={i} style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  background: 'white',
+                  border: `3px solid ${colors.primary}`,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px',
+                  fontSize: '20px',
+                }}>{step.icon}</div>
+                <div style={{ fontSize: '12px', color: colors.primary, fontWeight: '600' }}>{step.year}</div>
+                <div style={{ fontSize: '13px', color: colors.text, fontWeight: '500', marginTop: '4px' }}>{step.title}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -796,11 +1984,13 @@ const SocialProofSection = () => {
           justifyContent: 'center',
           gap: '24px',
           marginTop: '80px',
+          flexWrap: 'wrap',
         }}>
           {[
             { icon: '🏆', text: 'IP 디딤돌 특허 프로그램 선정' },
             { icon: '🎓', text: '충남대학교 RISE 창업동아리' },
             { icon: '📋', text: '특허 출원 예정' },
+            { icon: '🏅', text: '대전대학 창업대회 수상' },
           ].map((badge, i) => (
             <div key={i} style={{
               display: 'flex',
@@ -823,13 +2013,34 @@ const SocialProofSection = () => {
 // Team 섹션
 const TeamSection = () => {
   const team = [
-    { name: '유병훈', role: '대표', dept: '충남대 경영학부', desc: '서비스 기획 / S/W 개발 총괄', highlight: '대전대학 창업대회 수상' },
-    { name: '박선제', role: '팀원', dept: '충남대 유기재료공학과', desc: '서비스 기획 / S/W 개발', highlight: '' },
-    { name: '박정빈', role: '팀원', dept: '충남대 경영학부', desc: '서비스 기획 / S/W 개발', highlight: '' },
+    {
+      name: '유병훈',
+      role: '대표',
+      dept: '충남대 경영학부 2학년',
+      major: '복수전공: 정치외교학과',
+      desc: '서비스 기획 / S/W 개발 총괄',
+      highlight: '대전대학 창업대회 수상, 창업 교육 강사'
+    },
+    {
+      name: '박선제',
+      role: '팀원',
+      dept: '충남대 유기재료공학과 2학년',
+      major: '',
+      desc: '서비스 기획 / S/W 개발',
+      highlight: ''
+    },
+    {
+      name: '박정빈',
+      role: '팀원',
+      dept: '충남대 경영학부 4학년',
+      major: '복수전공: 창업경영학',
+      desc: '서비스 기획 / S/W 개발',
+      highlight: 'Meta sLLM 실무 활용'
+    },
   ];
 
   return (
-    <section style={{
+    <section id="team" style={{
       padding: '120px 60px',
       background: colors.background,
     }}>
@@ -895,17 +2106,24 @@ const TeamSection = () => {
               <p style={{
                 fontSize: '14px',
                 color: colors.textLight,
-                marginBottom: '12px',
+                marginBottom: '4px',
               }}>{member.dept}</p>
+              {member.major && (
+                <p style={{
+                  fontSize: '12px',
+                  color: colors.textMuted,
+                  marginBottom: '12px',
+                }}>{member.major}</p>
+              )}
               <p style={{
                 fontSize: '13px',
                 color: colors.textMuted,
+                marginBottom: '12px',
               }}>{member.desc}</p>
               {member.highlight && (
                 <p style={{
                   fontSize: '12px',
                   color: colors.primary,
-                  marginTop: '12px',
                   fontWeight: '500',
                 }}>{member.highlight}</p>
               )}
@@ -937,15 +2155,14 @@ const TeamSection = () => {
 // CTA 섹션
 const CTASection = () => {
   return (
-    <section style={{
+    <section id="contact" style={{
       padding: '120px 60px',
       background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
     }}>
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{
           fontSize: '40px',
           fontWeight: '700',
-          textAlign: 'center',
           marginBottom: '16px',
           color: 'white',
         }}>
@@ -954,7 +2171,6 @@ const CTASection = () => {
         <p style={{
           fontSize: '18px',
           color: 'rgba(255,255,255,0.8)',
-          textAlign: 'center',
           marginBottom: '48px',
         }}>
           제품 상담 및 시연 문의를 남겨주세요.<br />
@@ -967,124 +2183,86 @@ const CTASection = () => {
           padding: '48px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
         }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-            <div>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: colors.text, display: 'block', marginBottom: '8px' }}>
-                이름 <span style={{ color: colors.secondary }}>*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="홍길동"
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  border: '2px solid #eee',
-                  borderRadius: '12px',
-                  fontSize: '15px',
-                  outline: 'none',
-                  transition: 'border-color 0.2s',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-            <div>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: colors.text, display: 'block', marginBottom: '8px' }}>
-                연락처 <span style={{ color: colors.secondary }}>*</span>
-              </label>
-              <input
-                type="tel"
-                placeholder="010-1234-5678"
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  border: '2px solid #eee',
-                  borderRadius: '12px',
-                  fontSize: '15px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ fontSize: '14px', fontWeight: '600', color: colors.text, display: 'block', marginBottom: '8px' }}>
-              이메일
-            </label>
-            <input
-              type="email"
-              placeholder="email@example.com"
-              style={{
-                width: '100%',
-                padding: '16px',
-                border: '2px solid #eee',
-                borderRadius: '12px',
-                fontSize: '15px',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ fontSize: '14px', fontWeight: '600', color: colors.text, display: 'block', marginBottom: '8px' }}>
-              문의 유형 <span style={{ color: colors.secondary }}>*</span>
-            </label>
-            <select
-              style={{
-                width: '100%',
-                padding: '16px',
-                border: '2px solid #eee',
-                borderRadius: '12px',
-                fontSize: '15px',
-                outline: 'none',
-                background: 'white',
-                boxSizing: 'border-box',
-              }}
-            >
-              <option value="">선택해주세요</option>
-              <option value="personal">개인 구매 문의</option>
-              <option value="b2b">기관 납품 문의</option>
-              <option value="invest">투자 문의</option>
-              <option value="other">기타</option>
-            </select>
-          </div>
-
-          <div style={{ marginBottom: '32px' }}>
-            <label style={{ fontSize: '14px', fontWeight: '600', color: colors.text, display: 'block', marginBottom: '8px' }}>
-              상세 문의
-            </label>
-            <textarea
-              placeholder="문의 내용을 입력해주세요"
-              rows={4}
-              style={{
-                width: '100%',
-                padding: '16px',
-                border: '2px solid #eee',
-                borderRadius: '12px',
-                fontSize: '15px',
-                outline: 'none',
-                resize: 'none',
-                fontFamily: 'inherit',
-                boxSizing: 'border-box',
-              }}
-            />
-          </div>
-
-          <button style={{
-            width: '100%',
-            padding: '20px',
-            background: colors.secondary,
-            color: 'white',
-            border: 'none',
-            borderRadius: '12px',
-            fontSize: '18px',
-            fontWeight: '700',
-            cursor: 'pointer',
-            boxShadow: '0 8px 24px rgba(255, 140, 66, 0.3)',
+          <div style={{
+            width: '80px',
+            height: '80px',
+            background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 24px',
+            fontSize: '36px',
           }}>
-            무료 상담 신청하기
-          </button>
+            📋
+          </div>
+
+          <h3 style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            color: colors.text,
+            marginBottom: '12px',
+          }}>
+            무료 상담 신청
+          </h3>
+
+          <p style={{
+            fontSize: '15px',
+            color: colors.textLight,
+            marginBottom: '32px',
+            lineHeight: '1.6',
+          }}>
+            아래 버튼을 클릭하여 간단한 정보를 입력해주시면<br />
+            담당자가 빠르게 연락드립니다.
+          </p>
+
+          <a
+            href={GOOGLE_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '20px',
+              background: colors.secondary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 8px 24px rgba(255, 140, 66, 0.3)',
+              textDecoration: 'none',
+              boxSizing: 'border-box',
+            }}
+          >
+            상담 신청하기
+          </a>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '24px',
+            marginTop: '24px',
+            flexWrap: 'wrap',
+          }}>
+            {[
+              { icon: '✅', text: '개인 구매 문의' },
+              { icon: '✅', text: '기관 납품 문의' },
+              { icon: '✅', text: '투자 문의' },
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '13px',
+                color: colors.textLight,
+              }}>
+                <span>{item.icon}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 보조 CTA */}
@@ -1095,7 +2273,7 @@ const CTASection = () => {
           gap: '32px',
           marginTop: '32px',
         }}>
-          <a href="#" style={{
+          <a href="mailto:byunghun0501@gmail.com" style={{
             color: 'rgba(255,255,255,0.9)',
             textDecoration: 'none',
             fontSize: '15px',
@@ -1103,10 +2281,10 @@ const CTASection = () => {
             alignItems: 'center',
             gap: '8px',
           }}>
-            카탈로그 다운로드
+            byunghun0501@gmail.com
           </a>
           <span style={{ color: 'rgba(255,255,255,0.3)' }}>|</span>
-          <a href="tel:042-821-5957" style={{
+          <a href="tel:010-4576-9596" style={{
             color: 'rgba(255,255,255,0.9)',
             textDecoration: 'none',
             fontSize: '15px',
@@ -1114,7 +2292,7 @@ const CTASection = () => {
             alignItems: 'center',
             gap: '8px',
           }}>
-            042-821-5957
+            010-4576-9596
           </a>
         </div>
       </div>
@@ -1123,7 +2301,7 @@ const CTASection = () => {
 };
 
 // Footer
-const Footer = () => (
+const Footer = ({ onOpenPrivacy, onOpenTerms }) => (
   <footer style={{
     padding: '60px',
     background: colors.text,
@@ -1153,20 +2331,24 @@ const Footer = () => (
         </div>
         <p style={{ fontSize: '14px', lineHeight: '1.7', marginBottom: '16px' }}>
           모르포 메디테크 (Morpho Meditech)<br />
-          충남대학교 창업지원단
+          생명/의료공학 분야
         </p>
         <p style={{ fontSize: '14px' }}>
-          042-821-5957<br />
-          startupedu@cnu.ac.kr
+          010-4576-9596<br />
+          byunghun0501@gmail.com
         </p>
       </div>
 
       <div>
         <h4 style={{ color: 'white', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>제품</h4>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {['제품 소개', '기술', '비교', 'FAQ'].map((item) => (
-            <li key={item} style={{ marginBottom: '12px' }}>
-              <a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item}</a>
+          {[
+            { label: '제품 소개', href: '#product' },
+            { label: '기술', href: '#technology' },
+            { label: '문의', href: '#contact' },
+          ].map((item) => (
+            <li key={item.label} style={{ marginBottom: '12px' }}>
+              <a href={item.href} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item.label}</a>
             </li>
           ))}
         </ul>
@@ -1175,9 +2357,11 @@ const Footer = () => (
       <div>
         <h4 style={{ color: 'white', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>회사</h4>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {['팀 소개', '연혁', '뉴스'].map((item) => (
-            <li key={item} style={{ marginBottom: '12px' }}>
-              <a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item}</a>
+          {[
+            { label: '팀 소개', href: '#team' },
+          ].map((item) => (
+            <li key={item.label} style={{ marginBottom: '12px' }}>
+              <a href={item.href} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item.label}</a>
             </li>
           ))}
         </ul>
@@ -1186,11 +2370,38 @@ const Footer = () => (
       <div>
         <h4 style={{ color: 'white', fontSize: '15px', fontWeight: '600', marginBottom: '20px' }}>법적 고지</h4>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {['개인정보처리방침', '이용약관'].map((item) => (
-            <li key={item} style={{ marginBottom: '12px' }}>
-              <a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item}</a>
-            </li>
-          ))}
+          <li style={{ marginBottom: '12px' }}>
+            <button
+              onClick={onOpenPrivacy}
+              style={{
+                color: 'rgba(255,255,255,0.7)',
+                textDecoration: 'none',
+                fontSize: '14px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              개인정보처리방침
+            </button>
+          </li>
+          <li style={{ marginBottom: '12px' }}>
+            <button
+              onClick={onOpenTerms}
+              style={{
+                color: 'rgba(255,255,255,0.7)',
+                textDecoration: 'none',
+                fontSize: '14px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+              }}
+            >
+              이용약관
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -1205,40 +2416,47 @@ const Footer = () => (
       alignItems: 'center',
     }}>
       <p style={{ fontSize: '13px' }}>© 2025 Morpho Meditech. All rights reserved.</p>
-      <div style={{ display: 'flex', gap: '16px' }}>
-        {['Instagram', 'YouTube', 'Blog'].map((sns) => (
-          <a key={sns} href="#" style={{
-            width: '36px',
-            height: '36px',
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            textDecoration: 'none',
-            fontSize: '12px',
-          }}>{sns[0]}</a>
-        ))}
-      </div>
     </div>
   </footer>
 );
 
 // 메인 앱
 export default function HealMatLandingPage() {
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
+
   return (
     <div>
       <GNB />
       <HeroSection />
       <ProblemSection />
       <SolutionSection />
+      <TestResultSection />
       <HowItWorksSection />
+      <VideoSection />
       <ComparisonSection />
+      <BusinessModelSection />
       <SocialProofSection />
       <TeamSection />
       <CTASection />
-      <Footer />
+      <Footer
+        onOpenPrivacy={() => setPrivacyOpen(true)}
+        onOpenTerms={() => setTermsOpen(true)}
+      />
+
+      {/* 법적 고지 팝업 */}
+      <LegalPopup
+        isOpen={privacyOpen}
+        onClose={() => setPrivacyOpen(false)}
+        title="개인정보처리방침"
+        content={PRIVACY_POLICY}
+      />
+      <LegalPopup
+        isOpen={termsOpen}
+        onClose={() => setTermsOpen(false)}
+        title="이용약관"
+        content={TERMS_OF_SERVICE}
+      />
     </div>
   );
 }

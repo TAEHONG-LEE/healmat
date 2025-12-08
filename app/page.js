@@ -2,6 +2,31 @@
 
 import { useState, useEffect } from 'react';
 
+// 반응형 미디어 쿼리 훅 - 일반적으로 많이 사용하는 방법
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [matches, query]);
+
+  return matches;
+};
+
+// 반응형 브레이크포인트 훅
+const useResponsive = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
+  const isDesktop = useMediaQuery('(min-width: 1025px)');
+  return { isMobile, isTablet, isDesktop };
+};
+
 // 컬러 시스템
 const colors = {
   primary: '#2E7D6E',
@@ -207,6 +232,8 @@ const LegalPopup = ({ isOpen, onClose, title, content }) => {
 // GNB 컴포넌트
 const GNB = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isMobile } = useResponsive();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -214,84 +241,183 @@ const GNB = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navItems = [
+    { label: '제품 소개', href: '#product' },
+    { label: '기술', href: '#technology' },
+    { label: '팀 소개', href: '#team' },
+    { label: '문의', href: '#contact' },
+  ];
+
   return (
-    <nav style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      height: '80px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 60px',
-      background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(10px)' : 'none',
-      boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.1)' : 'none',
-      zIndex: 1000,
-      transition: 'all 0.3s ease',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <>
+      <nav style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: isMobile ? '60px' : '80px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: isMobile ? '0 20px' : '0 60px',
+        background: scrolled || mobileMenuOpen ? 'rgba(255,255,255,0.95)' : 'transparent',
+        backdropFilter: scrolled || mobileMenuOpen ? 'blur(10px)' : 'none',
+        boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.1)' : 'none',
+        zIndex: 1000,
+        transition: 'all 0.3s ease',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: isMobile ? '32px' : '40px',
+            height: isMobile ? '32px' : '40px',
+            background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: isMobile ? '14px' : '18px',
+          }}>H</div>
+          <span style={{ fontSize: isMobile ? '16px' : '20px', fontWeight: '700', color: colors.text }}>힐매트</span>
+        </div>
+
+        {/* 데스크톱 메뉴 */}
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
+            {navItems.map((item) => (
+              <a key={item.label} href={item.href} style={{
+                color: colors.text,
+                textDecoration: 'none',
+                fontSize: '15px',
+                fontWeight: '500',
+                transition: 'color 0.2s',
+              }}>{item.label}</a>
+            ))}
+            <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
+              padding: '12px 24px',
+              background: colors.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              textDecoration: 'none',
+            }}>상담 신청</a>
+          </div>
+        )}
+
+        {/* 모바일 햄버거 메뉴 버튼 */}
+        {isMobile && (
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '8px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '5px',
+            }}
+          >
+            <span style={{
+              width: '24px',
+              height: '2px',
+              background: colors.text,
+              transition: 'all 0.3s ease',
+              transform: mobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none',
+            }} />
+            <span style={{
+              width: '24px',
+              height: '2px',
+              background: colors.text,
+              opacity: mobileMenuOpen ? 0 : 1,
+              transition: 'all 0.3s ease',
+            }} />
+            <span style={{
+              width: '24px',
+              height: '2px',
+              background: colors.text,
+              transition: 'all 0.3s ease',
+              transform: mobileMenuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none',
+            }} />
+          </button>
+        )}
+      </nav>
+
+      {/* 모바일 메뉴 드로어 */}
+      {isMobile && mobileMenuOpen && (
         <div style={{
-          width: '40px',
-          height: '40px',
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontWeight: 'bold',
-          fontSize: '18px',
-        }}>H</div>
-        <span style={{ fontSize: '20px', fontWeight: '700', color: colors.text }}>힐매트</span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-        {[
-          { label: '제품 소개', href: '#product' },
-          { label: '기술', href: '#technology' },
-          { label: '팀 소개', href: '#team' },
-          { label: '문의', href: '#contact' },
-        ].map((item) => (
-          <a key={item.label} href={item.href} style={{
-            color: colors.text,
-            textDecoration: 'none',
-            fontSize: '15px',
-            fontWeight: '500',
-            transition: 'color 0.2s',
-          }}>{item.label}</a>
-        ))}
-        <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
-          padding: '12px 24px',
-          background: colors.primary,
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
-          fontSize: '14px',
-          fontWeight: '600',
-          cursor: 'pointer',
-          textDecoration: 'none',
-        }}>상담 신청</a>
-      </div>
-    </nav>
+          position: 'fixed',
+          top: '60px',
+          left: 0,
+          right: 0,
+          background: 'rgba(255,255,255,0.98)',
+          backdropFilter: 'blur(10px)',
+          zIndex: 999,
+          padding: '20px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        }}>
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                display: 'block',
+                padding: '16px 0',
+                color: colors.text,
+                textDecoration: 'none',
+                fontSize: '16px',
+                fontWeight: '500',
+                borderBottom: `1px solid ${colors.background}`,
+              }}
+            >{item.label}</a>
+          ))}
+          <a
+            href={GOOGLE_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'block',
+              marginTop: '20px',
+              padding: '16px',
+              background: colors.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '16px',
+              fontWeight: '600',
+              textAlign: 'center',
+              textDecoration: 'none',
+            }}
+          >상담 신청</a>
+        </div>
+      )}
+    </>
   );
 };
 
 // Hero 섹션
-const HeroSection = () => (
+const HeroSection = () => {
+  const { isMobile, isTablet } = useResponsive();
+
+  return (
   <section id="product" style={{
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
-    padding: '100px 60px 60px',
+    padding: isMobile ? '80px 20px 40px' : isTablet ? '100px 40px 60px' : '100px 60px 60px',
     background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
   }}>
     <div style={{
       maxWidth: '1400px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '80px',
+      gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1fr' : '1fr 1fr',
+      gap: isMobile ? '40px' : '80px',
       alignItems: 'center',
       width: '100%',
     }}>
@@ -301,12 +427,14 @@ const HeroSection = () => (
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        order: isMobile ? 2 : 1,
       }}>
         <div style={{
-          width: '520px',
-          height: '420px',
+          width: isMobile ? '100%' : '520px',
+          maxWidth: '520px',
+          height: isMobile ? '300px' : '420px',
           background: 'linear-gradient(145deg, #e8f5f3 0%, #d4ede8 100%)',
-          borderRadius: '24px',
+          borderRadius: isMobile ? '16px' : '24px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -314,13 +442,14 @@ const HeroSection = () => (
           boxShadow: '0 20px 60px rgba(46, 125, 110, 0.15)',
           position: 'relative',
           overflow: 'hidden',
-          padding: '40px',
+          padding: isMobile ? '20px' : '40px',
         }}>
           {/* 힐매트 접이식 구조 - 애니메이션 */}
           <div style={{
             position: 'relative',
-            width: '400px',
-            height: '280px',
+            width: isMobile ? '280px' : '400px',
+            height: isMobile ? '200px' : '280px',
+            transform: isMobile ? 'scale(0.7)' : 'scale(1)',
           }}>
             {/* 베이스 프레임 (하판) */}
             <div style={{
@@ -335,7 +464,7 @@ const HeroSection = () => (
               boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
             }} />
 
-            {/* 왼쪽 에어셀 - 삼각 기둥 (팽창) - 상판 좌측 끝과 밀착 */}
+            {/* 왼쪽 에어셀 */}
             <div style={{
               position: 'absolute',
               bottom: '55px',
@@ -351,14 +480,10 @@ const HeroSection = () => (
               justifyContent: 'center',
               paddingBottom: '8px',
             }}>
-              <span style={{
-                color: 'white',
-                fontSize: '11px',
-                fontWeight: '700',
-              }}>AIR</span>
+              <span style={{ color: 'white', fontSize: '11px', fontWeight: '700' }}>AIR</span>
             </div>
 
-            {/* 오른쪽 에어셀 - 평평 (기본 높이와 동일) */}
+            {/* 오른쪽 에어셀 */}
             <div style={{
               position: 'absolute',
               bottom: '55px',
@@ -370,7 +495,7 @@ const HeroSection = () => (
               boxShadow: '0 2px 8px rgba(91, 163, 198, 0.3)',
             }} />
 
-            {/* 접이식 상판 - 왼쪽 날개 (에어셀 위에 밀착) */}
+            {/* 왼쪽 상판 */}
             <div style={{
               position: 'absolute',
               bottom: '95px',
@@ -389,7 +514,7 @@ const HeroSection = () => (
               }} />
             </div>
 
-            {/* 접이식 상판 - 오른쪽 날개 (평평, 오른쪽 에어셀 위) */}
+            {/* 오른쪽 상판 */}
             <div style={{
               position: 'absolute',
               bottom: '95px',
@@ -402,7 +527,7 @@ const HeroSection = () => (
               boxShadow: '0 2px 10px rgba(46, 125, 110, 0.2)',
             }} />
 
-            {/* 환자 실루엣 - 힌지 중앙에 위치, 양쪽 상판 커버 */}
+            {/* 환자 실루엣 */}
             <div style={{
               position: 'absolute',
               bottom: '107px',
@@ -412,7 +537,6 @@ const HeroSection = () => (
               animation: 'patientTilt 4s ease-in-out infinite',
               zIndex: 5,
             }}>
-              {/* 몸통 - 좌우로 긴 직사각형, 둥근 모서리(어깨) */}
               <div style={{
                 width: '280px',
                 height: '50px',
@@ -421,7 +545,6 @@ const HeroSection = () => (
                 position: 'relative',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}>
-                {/* 머리 - 몸통 중앙에 겹쳐진 원 */}
                 <div style={{
                   position: 'absolute',
                   left: '50%',
@@ -433,18 +556,8 @@ const HeroSection = () => (
                   overflow: 'hidden',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                 }}>
-                  {/* 얼굴 (위쪽, 밝은 색) */}
-                  <div style={{
-                    width: '100%',
-                    height: '50%',
-                    background: '#f0dfd0',
-                  }} />
-                  {/* 머리카락 (아래쪽, 어두운 색) */}
-                  <div style={{
-                    width: '100%',
-                    height: '50%',
-                    background: '#3d2b1f',
-                  }} />
+                  <div style={{ width: '100%', height: '50%', background: '#f0dfd0' }} />
+                  <div style={{ width: '100%', height: '50%', background: '#3d2b1f' }} />
                 </div>
               </div>
             </div>
@@ -477,116 +590,122 @@ const HeroSection = () => (
             {/* 70도 각도 표시 */}
             <div style={{
               position: 'absolute',
-              top: '20px',
-              left: '20px',
+              top: isMobile ? '5px' : '20px',
+              left: isMobile ? '5px' : '20px',
               background: 'rgba(255,255,255,0.95)',
-              borderRadius: '12px',
-              padding: '12px 16px',
+              borderRadius: isMobile ? '8px' : '12px',
+              padding: isMobile ? '8px 10px' : '12px 16px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               zIndex: 20,
             }}>
-              <div style={{ fontSize: '12px', color: colors.textLight, marginBottom: '4px' }}>최대 기울기</div>
-              <div style={{ fontSize: '28px', fontWeight: '700', color: colors.secondary }}>70°</div>
+              <div style={{ fontSize: isMobile ? '10px' : '12px', color: colors.textLight, marginBottom: '4px' }}>최대 기울기</div>
+              <div style={{ fontSize: isMobile ? '20px' : '28px', fontWeight: '700', color: colors.secondary }}>70°</div>
             </div>
 
-            {/* 상태 표시 */}
-            <div style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}>
+            {/* 상태 표시 - 모바일에서 숨김 */}
+            {!isMobile && (
               <div style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
                 display: 'flex',
-                alignItems: 'center',
+                flexDirection: 'column',
                 gap: '8px',
-                fontSize: '12px',
               }}>
-                <div style={{ width: '12px', height: '12px', background: colors.secondary, borderRadius: '3px' }} />
-                <span style={{ color: colors.text }}>에어셀 팽창</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+                  <div style={{ width: '12px', height: '12px', background: colors.secondary, borderRadius: '3px' }} />
+                  <span style={{ color: colors.text }}>에어셀 팽창</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+                  <div style={{ width: '12px', height: '12px', background: colors.primary, borderRadius: '3px' }} />
+                  <span style={{ color: colors.text }}>상판 연동</span>
+                </div>
               </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '12px',
-              }}>
-                <div style={{ width: '12px', height: '12px', background: colors.primary, borderRadius: '3px' }} />
-                <span style={{ color: colors.text }}>상판 연동</span>
-              </div>
-            </div>
+            )}
           </div>
 
           <p style={{
-            marginTop: '16px',
+            marginTop: isMobile ? '8px' : '16px',
             color: colors.primary,
-            fontSize: '14px',
+            fontSize: isMobile ? '11px' : '14px',
             fontWeight: '600',
+            textAlign: 'center',
           }}>삼각 에어셀 팽창 → 상판 밀착 상승 → 자동 체위 변환</p>
         </div>
       </div>
 
       {/* 텍스트 영역 */}
-      <div>
+      <div style={{ order: isMobile ? 1 : 2, textAlign: isMobile ? 'center' : 'left' }}>
         <h1 style={{
-          fontSize: '52px',
+          fontSize: isMobile ? '28px' : isTablet ? '40px' : '52px',
           fontWeight: '700',
           lineHeight: '1.2',
           color: colors.text,
-          marginBottom: '24px',
+          marginBottom: isMobile ? '16px' : '24px',
         }}>
           <span style={{ color: colors.primary }}>70도</span> 자동 자세 변환,<br />
           이제 욕창 걱정 없이<br />
           편안하게
         </h1>
         <p style={{
-          fontSize: '20px',
+          fontSize: isMobile ? '15px' : '20px',
           color: colors.textLight,
-          marginBottom: '40px',
+          marginBottom: isMobile ? '24px' : '40px',
           lineHeight: '1.6',
         }}>
           오리가미 기술로 완성한 스마트 욕창예방매트리스,<br />
           <strong style={{ color: colors.primary }}>힐매트</strong>
         </p>
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '40px' }}>
+        <div style={{
+          display: 'flex',
+          gap: isMobile ? '12px' : '16px',
+          marginBottom: isMobile ? '24px' : '40px',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'stretch' : 'flex-start',
+        }}>
           <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
-            padding: '18px 36px',
+            padding: isMobile ? '14px 24px' : '18px 36px',
             background: colors.primary,
             color: 'white',
             border: 'none',
             borderRadius: '12px',
-            fontSize: '16px',
+            fontSize: isMobile ? '14px' : '16px',
             fontWeight: '600',
             cursor: 'pointer',
             boxShadow: '0 8px 24px rgba(46, 125, 110, 0.3)',
             transition: 'transform 0.2s, box-shadow 0.2s',
             textDecoration: 'none',
+            textAlign: 'center',
           }}>제품 상담 신청하기</a>
           <a href="#video" style={{
-            padding: '18px 36px',
+            padding: isMobile ? '14px 24px' : '18px 36px',
             background: 'transparent',
             color: colors.primary,
             border: `2px solid ${colors.primary}`,
             borderRadius: '12px',
-            fontSize: '16px',
+            fontSize: isMobile ? '14px' : '16px',
             fontWeight: '600',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '8px',
             textDecoration: 'none',
           }}>제품 동작 과정 보기</a>
         </div>
         {/* 신뢰 배지 */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <div style={{
+          display: 'flex',
+          gap: isMobile ? '8px' : '12px',
+          flexWrap: 'wrap',
+          justifyContent: isMobile ? 'center' : 'flex-start',
+        }}>
           {['IP 디딤돌 특허 프로그램', '충남대 RISE 창업동아리', '프로토타입 개발 완료'].map((badge) => (
             <span key={badge} style={{
-              padding: '8px 16px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
               background: 'rgba(46, 125, 110, 0.1)',
               borderRadius: '20px',
-              fontSize: '13px',
+              fontSize: isMobile ? '11px' : '13px',
               color: colors.primary,
               fontWeight: '500',
             }}>{badge}</span>
@@ -595,10 +714,13 @@ const HeroSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
+
 
 // Problem 섹션
 const ProblemSection = () => {
+  const { isMobile } = useResponsive();
   const stats = [
     { icon: '📈', value: '22%', label: '환자 증가', desc: '21,700 → 26,600명 (3년간)' },
     { icon: '👨‍⚕️', value: '6.9명', label: '간호사 수', desc: 'OECD 평균 9명 대비 부족' },
@@ -607,15 +729,15 @@ const ProblemSection = () => {
 
   return (
     <section style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: colors.background,
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
-          marginBottom: '60px',
+          marginBottom: isMobile ? '32px' : '60px',
           color: colors.text,
         }}>
           욕창, 왜 이렇게 <span style={{ color: colors.primary }}>관리가 어려울까요?</span>
@@ -624,23 +746,23 @@ const ProblemSection = () => {
         {/* 통계 카드 */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '32px',
-          marginBottom: '60px',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '16px' : '32px',
+          marginBottom: isMobile ? '32px' : '60px',
         }}>
           {stats.map((stat, i) => (
             <div key={i} style={{
               background: 'white',
-              borderRadius: '20px',
-              padding: '40px 32px',
+              borderRadius: isMobile ? '16px' : '20px',
+              padding: isMobile ? '24px 20px' : '40px 32px',
               textAlign: 'center',
               boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
               transition: 'transform 0.3s, box-shadow 0.3s',
               cursor: 'default',
             }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>{stat.icon}</div>
+              <div style={{ fontSize: isMobile ? '36px' : '48px', marginBottom: isMobile ? '12px' : '16px' }}>{stat.icon}</div>
               <div style={{
-                fontSize: '48px',
+                fontSize: isMobile ? '32px' : '48px',
                 fontWeight: '700',
                 color: colors.primary,
                 marginBottom: '8px',
@@ -648,13 +770,13 @@ const ProblemSection = () => {
                 {stat.value}
               </div>
               <div style={{
-                fontSize: '18px',
+                fontSize: isMobile ? '16px' : '18px',
                 fontWeight: '600',
                 color: colors.text,
                 marginBottom: '8px',
               }}>{stat.label}</div>
               <div style={{
-                fontSize: '14px',
+                fontSize: isMobile ? '12px' : '14px',
                 color: colors.textMuted,
               }}>{stat.desc}</div>
             </div>
@@ -664,31 +786,31 @@ const ProblemSection = () => {
         {/* 인용문 */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '24px',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '16px' : '24px',
         }}>
           <div style={{
             background: 'white',
-            borderRadius: '20px',
-            padding: '32px',
+            borderRadius: isMobile ? '16px' : '20px',
+            padding: isMobile ? '24px' : '32px',
             boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
           }}>
-            <div style={{ fontSize: '14px', color: colors.textMuted, marginBottom: '12px' }}>50대, 80대 노모 간병 중</div>
-            <p style={{ fontSize: '18px', color: colors.text, lineHeight: '1.6' }}>
-              &ldquo;(어머니의) 붉은 상처를 대수롭지 않게 생각했다가<br />
-              <span style={{ color: colors.secondary, fontWeight: '600' }}>3기 욕창으로 번져서 결국 수술했어요.&rdquo;</span>
+            <div style={{ fontSize: isMobile ? '12px' : '14px', color: colors.textMuted, marginBottom: '12px' }}>50대, 80대 노모 간병 중</div>
+            <p style={{ fontSize: isMobile ? '15px' : '18px', color: colors.text, lineHeight: '1.6' }}>
+              "(어머니의) 붉은 상처를 대수롭지 않게 생각했다가<br />
+              <span style={{ color: colors.secondary, fontWeight: '600' }}>3기 욕창으로 번져서 결국 수술했어요."</span>
             </p>
           </div>
           <div style={{
             background: 'white',
-            borderRadius: '20px',
-            padding: '32px',
+            borderRadius: isMobile ? '16px' : '20px',
+            padding: isMobile ? '24px' : '32px',
             boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
           }}>
-            <div style={{ fontSize: '14px', color: colors.textMuted, marginBottom: '12px' }}>60대, 전신 마비 환자 10년 간병 중</div>
-            <p style={{ fontSize: '18px', color: colors.text, lineHeight: '1.6' }}>
-              &ldquo;남편(환자)이 1시간마다 자세를 바꿔달라고 해서<br />
-              이제는 <span style={{ color: colors.secondary, fontWeight: '600' }}>어깨랑 손목이 너무 아파요.&rdquo;</span>
+            <div style={{ fontSize: isMobile ? '12px' : '14px', color: colors.textMuted, marginBottom: '12px' }}>60대, 전신 마비 환자 10년 간병 중</div>
+            <p style={{ fontSize: isMobile ? '15px' : '18px', color: colors.text, lineHeight: '1.6' }}>
+              "남편(환자)이 1시간마다 자세를 바꿔달라고 해서<br />
+              이제는 <span style={{ color: colors.secondary, fontWeight: '600' }}>어깨랑 손목이 너무 아파요."</span>
             </p>
           </div>
         </div>
@@ -697,9 +819,11 @@ const ProblemSection = () => {
   );
 };
 
+
 // 단계별 캐러셀 컴포넌트 - HeroSection 애니메이션 값 기반
 const StepCarousel = ({ steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const { isMobile } = useResponsive();
 
   const goToPrev = () => {
     setCurrentStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1));
@@ -714,9 +838,9 @@ const StepCarousel = ({ steps }) => {
   return (
     <div style={{
       background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
-      borderRadius: '24px',
-      padding: '50px',
-      marginBottom: '60px',
+      borderRadius: isMobile ? '16px' : '24px',
+      padding: isMobile ? '20px' : '50px',
+      marginBottom: isMobile ? '32px' : '60px',
     }}>
       <h3 style={{ fontSize: '24px', fontWeight: '700', color: colors.text, marginBottom: '30px', textAlign: 'center' }}>
         힐매트 구조 & 작동 원리
@@ -782,8 +906,8 @@ const StepCarousel = ({ steps }) => {
           {/* 다이어그램 + 실제 이미지 2단 레이아웃 */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '20px',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '16px' : '20px',
             marginBottom: '20px',
           }}>
 
@@ -1055,6 +1179,7 @@ const StepCarousel = ({ steps }) => {
 
 // Solution 섹션
 const SolutionSection = () => {
+  const { isMobile } = useResponsive();
   const features = [
     {
       icon: '🔄',
@@ -1130,12 +1255,12 @@ const SolutionSection = () => {
 
   return (
     <section id="technology" style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: 'white',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1158,8 +1283,8 @@ const SolutionSection = () => {
         {/* 기능 카드 */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '16px' : '32px',
         }}>
           {features.map((feature, i) => (
             <div key={i} style={{
@@ -1201,6 +1326,7 @@ const SolutionSection = () => {
 
 // 테스트 결과 섹션 (새로 추가)
 const TestResultSection = () => {
+  const { isMobile } = useResponsive();
   const tests = [
     { weight: '45kg', angle: '70°+', status: '성공' },
     { weight: '77kg', angle: '70°+', status: '성공' },
@@ -1214,7 +1340,7 @@ const TestResultSection = () => {
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1233,8 +1359,8 @@ const TestResultSection = () => {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '16px' : '32px',
           marginBottom: '60px',
         }}>
           {tests.map((test, i) => (
@@ -1291,8 +1417,8 @@ const TestResultSection = () => {
           }}>테스트 검증 항목</h3>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '20px',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+            gap: isMobile ? '12px' : '20px',
           }}>
             {[
               { icon: '✅', title: '내구성', desc: '각 무게별 내구도 확인' },
@@ -1315,6 +1441,7 @@ const TestResultSection = () => {
 
 // How It Works 섹션
 const HowItWorksSection = () => {
+  const { isMobile } = useResponsive();
   const steps = [
     { num: '01', title: '스마트 감지', desc: '사용자 체형과 무게에 맞춰 자동 조절', icon: '📡' },
     { num: '02', title: '공기압 제어', desc: '4개 에어셀 독립 제어로 정밀한 자세 변환', icon: '🎛️' },
@@ -1324,12 +1451,12 @@ const HowItWorksSection = () => {
 
   return (
     <section style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: colors.background,
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1344,8 +1471,8 @@ const HowItWorksSection = () => {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '24px',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gap: isMobile ? '12px' : '24px',
           position: 'relative',
         }}>
           {/* 연결선 */}
@@ -1409,6 +1536,7 @@ const HowItWorksSection = () => {
 // 제품 동작 과정 섹션
 const VideoSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const { isMobile } = useResponsive();
   const images = [
     { src: '/images/healmat1.jpg', title: '평평한 상태', desc: '환자가 힐매트 위에 누워있는 초기 상태' },
     { src: '/images/healmat2.png', title: '에어셀 팽창', desc: '한쪽 에어셀이 팽창하며 상판이 기울어지는 상태' },
@@ -1417,12 +1545,12 @@ const VideoSection = () => {
 
   return (
     <section id="video" style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: 'white',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1626,6 +1754,7 @@ const VideoSection = () => {
 
 // Comparison 섹션
 const ComparisonSection = () => {
+  const { isMobile } = useResponsive();
   const data = [
     { feature: '가격대', a: '7만원', b: '35만원', c: '80만원', d: '협의' },
     { feature: '내구성', a: '❌ PVC 원단', b: '✅ TPU 원단', c: '✅ CNC 정밀가공', d: '✅ TPU, PC 소재' },
@@ -1635,12 +1764,12 @@ const ComparisonSection = () => {
 
   return (
     <section style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: 'white',
     }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1711,14 +1840,15 @@ const ComparisonSection = () => {
 
 // 비즈니스 모델 섹션 (새로 추가)
 const BusinessModelSection = () => {
+  const { isMobile } = useResponsive();
   return (
     <section style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: colors.background,
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -1737,8 +1867,8 @@ const BusinessModelSection = () => {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '16px' : '32px',
           marginBottom: '60px',
         }}>
           {/* B2C */}
@@ -1883,6 +2013,7 @@ const BusinessModelSection = () => {
 
 // Social Proof 섹션
 const SocialProofSection = () => {
+  const { isMobile } = useResponsive();
   const stats = [
     { num: '9명', label: '의료진 인터뷰', icon: '👨‍⚕️' },
     { num: '10명', label: '보호자 인터뷰', icon: '👨‍👩‍👦' },
@@ -1900,12 +2031,12 @@ const SocialProofSection = () => {
 
   return (
     <section style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: 'white',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '60px',
@@ -1915,8 +2046,8 @@ const SocialProofSection = () => {
         {/* 통계 */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '24px',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gap: isMobile ? '12px' : '24px',
           marginBottom: '80px',
         }}>
           {stats.map((stat, i) => (
@@ -2012,6 +2143,7 @@ const SocialProofSection = () => {
 
 // Team 섹션
 const TeamSection = () => {
+  const { isMobile } = useResponsive();
   const team = [
     {
       name: '유병훈',
@@ -2041,12 +2173,12 @@ const TeamSection = () => {
 
   return (
     <section id="team" style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: colors.background,
     }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           textAlign: 'center',
           marginBottom: '20px',
@@ -2063,8 +2195,8 @@ const TeamSection = () => {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '16px' : '32px',
         }}>
           {team.map((member, i) => (
             <div key={i} style={{
@@ -2154,14 +2286,15 @@ const TeamSection = () => {
 
 // CTA 섹션
 const CTASection = () => {
+  const { isMobile } = useResponsive();
   return (
     <section id="contact" style={{
-      padding: '120px 60px',
+      padding: isMobile ? '60px 20px' : '120px 60px',
       background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
     }}>
       <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{
-          fontSize: '40px',
+          fontSize: isMobile ? '24px' : '40px',
           fontWeight: '700',
           marginBottom: '16px',
           color: 'white',
@@ -2301,9 +2434,11 @@ const CTASection = () => {
 };
 
 // Footer
-const Footer = ({ onOpenPrivacy, onOpenTerms }) => (
+const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
+  const { isMobile } = useResponsive();
+  return (
   <footer style={{
-    padding: '60px',
+    padding: isMobile ? '40px 20px' : '60px',
     background: colors.text,
     color: 'rgba(255,255,255,0.7)',
   }}>
@@ -2311,8 +2446,8 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => (
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: '2fr 1fr 1fr 1fr',
-      gap: '60px',
+      gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr 1fr 1fr',
+      gap: isMobile ? '32px' : '60px',
     }}>
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
@@ -2418,7 +2553,8 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => (
       <p style={{ fontSize: '13px' }}>© 2025 Morpho Meditech. All rights reserved.</p>
     </div>
   </footer>
-);
+  );
+};
 
 // 메인 앱
 export default function HealMatLandingPage() {

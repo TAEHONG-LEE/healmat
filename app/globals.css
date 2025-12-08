@@ -66,3 +66,24 @@ button {
 input, textarea, select {
   font-family: inherit;
 }
+
+/* 반응형 기본 스타일 */
+@media (max-width: 768px) {
+  /* 테이블 가로 스크롤 */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* 이미지 반응형 */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* 부드러운 스크롤 트랜지션 */
+* {
+  -webkit-overflow-scrolling: touch;
+}

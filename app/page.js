@@ -286,15 +286,14 @@ const GNB = () => {
         {!isMobile && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} style={{
+              <a key={item.label} href={item.href} className="nav-link" style={{
                 color: colors.text,
                 textDecoration: 'none',
                 fontSize: '15px',
                 fontWeight: '500',
-                transition: 'color 0.2s',
               }}>{item.label}</a>
             ))}
-            <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
+            <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{
               padding: '12px 24px',
               background: colors.primary,
               color: 'white',
@@ -304,6 +303,7 @@ const GNB = () => {
               fontWeight: '600',
               cursor: 'pointer',
               textDecoration: 'none',
+              boxShadow: '0 4px 12px rgba(46, 125, 110, 0.2)',
             }}>상담 신청</a>
           </div>
         )}
@@ -380,6 +380,7 @@ const GNB = () => {
             href={GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
+            className="btn-primary"
             style={{
               display: 'block',
               marginTop: '20px',
@@ -392,6 +393,7 @@ const GNB = () => {
               fontWeight: '600',
               textAlign: 'center',
               textDecoration: 'none',
+              boxShadow: '0 4px 12px rgba(46, 125, 110, 0.2)',
             }}
           >상담 신청</a>
         </div>
@@ -663,7 +665,7 @@ const HeroSection = () => {
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'stretch' : 'flex-start',
         }}>
-          <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" style={{
+          <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary animate-fadeInUp" style={{
             padding: isMobile ? '14px 24px' : '18px 36px',
             background: colors.primary,
             color: 'white',
@@ -673,11 +675,11 @@ const HeroSection = () => {
             fontWeight: '600',
             cursor: 'pointer',
             boxShadow: '0 8px 24px rgba(46, 125, 110, 0.3)',
-            transition: 'transform 0.2s, box-shadow 0.2s',
             textDecoration: 'none',
             textAlign: 'center',
+            animationDelay: '0.3s',
           }}>제품 상담 신청하기</a>
-          <a href="#video" style={{
+          <a href="#video" className="btn-outline animate-fadeInUp" style={{
             padding: isMobile ? '14px 24px' : '18px 36px',
             background: 'transparent',
             color: colors.primary,
@@ -691,6 +693,7 @@ const HeroSection = () => {
             justifyContent: 'center',
             gap: '8px',
             textDecoration: 'none',
+            animationDelay: '0.4s',
           }}>제품 동작 과정 보기</a>
         </div>
         {/* 신뢰 배지 */}
@@ -701,13 +704,14 @@ const HeroSection = () => {
           justifyContent: isMobile ? 'center' : 'flex-start',
         }}>
           {['IP 디딤돌 특허 프로그램', '충남대 RISE 창업동아리', '프로토타입 개발 완료'].map((badge) => (
-            <span key={badge} style={{
+            <span key={badge} className="badge-hover" style={{
               padding: isMobile ? '6px 12px' : '8px 16px',
               background: 'rgba(46, 125, 110, 0.1)',
               borderRadius: '20px',
               fontSize: isMobile ? '11px' : '13px',
               color: colors.primary,
               fontWeight: '500',
+              cursor: 'default',
             }}>{badge}</span>
           ))}
         </div>
@@ -751,17 +755,16 @@ const ProblemSection = () => {
           marginBottom: isMobile ? '32px' : '60px',
         }}>
           {stats.map((stat, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover" style={{
               background: 'white',
               borderRadius: isMobile ? '16px' : '20px',
               padding: isMobile ? '24px 20px' : '40px 32px',
               textAlign: 'center',
               boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
-              transition: 'transform 0.3s, box-shadow 0.3s',
               cursor: 'default',
             }}>
-              <div style={{ fontSize: isMobile ? '36px' : '48px', marginBottom: isMobile ? '12px' : '16px' }}>{stat.icon}</div>
-              <div style={{
+              <div className="icon-hover" style={{ fontSize: isMobile ? '36px' : '48px', marginBottom: isMobile ? '12px' : '16px', display: 'inline-block' }}>{stat.icon}</div>
+              <div className="stat-number" style={{
                 fontSize: isMobile ? '32px' : '48px',
                 fontWeight: '700',
                 color: colors.primary,
@@ -789,7 +792,7 @@ const ProblemSection = () => {
           gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
           gap: isMobile ? '16px' : '24px',
         }}>
-          <div style={{
+          <div className="card-hover" style={{
             background: 'white',
             borderRadius: isMobile ? '16px' : '20px',
             padding: isMobile ? '24px' : '32px',
@@ -801,7 +804,7 @@ const ProblemSection = () => {
               <span style={{ color: colors.secondary, fontWeight: '600' }}>3기 욕창으로 번져서 결국 수술했어요."</span>
             </p>
           </div>
-          <div style={{
+          <div className="card-hover" style={{
             background: 'white',
             borderRadius: isMobile ? '16px' : '20px',
             padding: isMobile ? '24px' : '32px',
@@ -856,6 +859,7 @@ const StepCarousel = ({ steps }) => {
         {/* 왼쪽 화살표 */}
         <button
           onClick={goToPrev}
+          className="btn-circle"
           style={{
             width: '50px',
             height: '50px',
@@ -870,7 +874,6 @@ const StepCarousel = ({ steps }) => {
             fontSize: '24px',
             color: colors.primary,
             flexShrink: 0,
-            transition: 'transform 0.2s, box-shadow 0.2s',
           }}
         >
           ←
@@ -1125,6 +1128,7 @@ const StepCarousel = ({ steps }) => {
         {/* 오른쪽 화살표 */}
         <button
           onClick={goToNext}
+          className="btn-circle"
           style={{
             width: '50px',
             height: '50px',
@@ -1139,7 +1143,6 @@ const StepCarousel = ({ steps }) => {
             fontSize: '24px',
             color: 'white',
             flexShrink: 0,
-            transition: 'transform 0.2s, box-shadow 0.2s',
           }}
         >
           →
@@ -1287,14 +1290,13 @@ const SolutionSection = () => {
           gap: isMobile ? '16px' : '32px',
         }}>
           {features.map((feature, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover-lift" style={{
               background: colors.background,
               borderRadius: '20px',
               padding: '40px 32px',
               textAlign: 'center',
-              transition: 'transform 0.3s, box-shadow 0.3s',
             }}>
-              <div style={{
+              <div className="icon-hover" style={{
                 width: '80px',
                 height: '80px',
                 background: `rgba(46, 125, 110, 0.1)`,
@@ -1364,7 +1366,7 @@ const TestResultSection = () => {
           marginBottom: '60px',
         }}>
           {tests.map((test, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-glow" style={{
               background: 'white',
               borderRadius: '20px',
               padding: '40px',
@@ -1372,7 +1374,7 @@ const TestResultSection = () => {
               boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
               border: `2px solid ${colors.primary}`,
             }}>
-              <div style={{
+              <div className="animate-float" style={{
                 width: '100px',
                 height: '100px',
                 background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -1384,13 +1386,13 @@ const TestResultSection = () => {
               }}>
                 <span style={{ fontSize: '28px', fontWeight: '700', color: 'white' }}>{test.weight}</span>
               </div>
-              <div style={{
+              <div className="stat-number" style={{
                 fontSize: '48px',
                 fontWeight: '700',
                 color: colors.primary,
                 marginBottom: '8px',
               }}>{test.angle}</div>
-              <div style={{
+              <div className="badge-hover" style={{
                 display: 'inline-block',
                 padding: '8px 20px',
                 background: 'rgba(46, 125, 110, 0.1)',
@@ -1487,7 +1489,7 @@ const HowItWorksSection = () => {
           }} />
 
           {steps.map((step, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover" style={{
               background: 'white',
               borderRadius: '20px',
               padding: '32px 24px',
@@ -1496,7 +1498,7 @@ const HowItWorksSection = () => {
               position: 'relative',
               zIndex: 1,
             }}>
-              <div style={{
+              <div className="icon-hover" style={{
                 width: '64px',
                 height: '64px',
                 background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -1578,6 +1580,7 @@ const VideoSection = () => {
             {/* 왼쪽 화살표 */}
             <button
               onClick={() => setCurrentImage((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
+              className="btn-circle"
               style={{
                 width: '50px',
                 height: '50px',
@@ -1670,6 +1673,7 @@ const VideoSection = () => {
             {/* 오른쪽 화살표 */}
             <button
               onClick={() => setCurrentImage((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
+              className="btn-circle"
               style={{
                 width: '50px',
                 height: '50px',
@@ -1726,13 +1730,13 @@ const VideoSection = () => {
             { icon: '🎯', title: '정밀 제어', desc: '4개 에어셀 독립 제어 시스템' },
             { icon: '⏱️', title: '2시간 주기', desc: '의료 가이드라인 준수 자동 전환' },
           ].map((item, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover" style={{
               background: colors.background,
               borderRadius: '16px',
               padding: '32px',
               textAlign: 'center',
             }}>
-              <div style={{ fontSize: '40px', marginBottom: '16px' }}>{item.icon}</div>
+              <div className="icon-hover" style={{ fontSize: '40px', marginBottom: '16px', display: 'inline-block' }}>{item.icon}</div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '700',
@@ -1872,13 +1876,13 @@ const BusinessModelSection = () => {
           marginBottom: '60px',
         }}>
           {/* B2C */}
-          <div style={{
+          <div className="card-hover" style={{
             background: 'white',
             borderRadius: '20px',
             padding: '40px',
             boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
           }}>
-            <div style={{
+            <div className="badge-hover" style={{
               display: 'inline-block',
               padding: '8px 16px',
               background: colors.primary,
@@ -1912,13 +1916,13 @@ const BusinessModelSection = () => {
           </div>
 
           {/* B2B */}
-          <div style={{
+          <div className="card-hover" style={{
             background: 'white',
             borderRadius: '20px',
             padding: '40px',
             boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
           }}>
-            <div style={{
+            <div className="badge-hover" style={{
               display: 'inline-block',
               padding: '8px 16px',
               background: colors.secondary,
@@ -2051,14 +2055,14 @@ const SocialProofSection = () => {
           marginBottom: '80px',
         }}>
           {stats.map((stat, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover" style={{
               background: colors.background,
               borderRadius: '16px',
               padding: '32px',
               textAlign: 'center',
             }}>
-              <div style={{ fontSize: '40px', marginBottom: '12px' }}>{stat.icon}</div>
-              <div style={{ fontSize: '32px', fontWeight: '700', color: colors.primary }}>{stat.num}</div>
+              <div className="icon-hover" style={{ fontSize: '40px', marginBottom: '12px', display: 'inline-block' }}>{stat.icon}</div>
+              <div className="stat-number" style={{ fontSize: '32px', fontWeight: '700', color: colors.primary }}>{stat.num}</div>
               <div style={{ fontSize: '14px', color: colors.textLight, marginTop: '4px' }}>{stat.label}</div>
             </div>
           ))}
@@ -2123,13 +2127,14 @@ const SocialProofSection = () => {
             { icon: '📋', text: '특허 출원 예정' },
             { icon: '🏅', text: '대전대학 창업대회 수상' },
           ].map((badge, i) => (
-            <div key={i} style={{
+            <div key={i} className="badge-hover" style={{
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
               padding: '16px 24px',
               background: colors.background,
               borderRadius: '12px',
+              cursor: 'default',
             }}>
               <span style={{ fontSize: '24px' }}>{badge.icon}</span>
               <span style={{ fontSize: '14px', fontWeight: '600', color: colors.text }}>{badge.text}</span>
@@ -2148,26 +2153,20 @@ const TeamSection = () => {
     {
       name: '유병훈',
       role: '대표',
-      dept: '충남대 경영학부 2학년',
-      major: '복수전공: 정치외교학과',
+      major: '경영학 / 정치외교학',
       desc: '서비스 기획 / S/W 개발 총괄',
-      highlight: '대전대학 창업대회 수상, 창업 교육 강사'
     },
     {
       name: '박선제',
       role: '팀원',
-      dept: '충남대 유기재료공학과 2학년',
-      major: '',
+      major: '유기재료공학',
       desc: '서비스 기획 / S/W 개발',
-      highlight: ''
     },
     {
       name: '박정빈',
       role: '팀원',
-      dept: '충남대 경영학부 4학년',
-      major: '복수전공: 창업경영학',
+      major: '경영학 / 창업경영학',
       desc: '서비스 기획 / S/W 개발',
-      highlight: 'Meta sLLM 실무 활용'
     },
   ];
 
@@ -2199,14 +2198,14 @@ const TeamSection = () => {
           gap: isMobile ? '16px' : '32px',
         }}>
           {team.map((member, i) => (
-            <div key={i} style={{
+            <div key={i} className="card-hover" style={{
               background: 'white',
               borderRadius: '20px',
               padding: '40px 32px',
               textAlign: 'center',
               boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
             }}>
-              <div style={{
+              <div className="icon-hover" style={{
                 width: '100px',
                 height: '100px',
                 background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`,
@@ -2233,51 +2232,20 @@ const TeamSection = () => {
                 fontSize: '22px',
                 fontWeight: '700',
                 color: colors.text,
-                marginBottom: '4px',
+                marginBottom: '8px',
               }}>{member.name}</h3>
               <p style={{
                 fontSize: '14px',
-                color: colors.textLight,
-                marginBottom: '4px',
-              }}>{member.dept}</p>
-              {member.major && (
-                <p style={{
-                  fontSize: '12px',
-                  color: colors.textMuted,
-                  marginBottom: '12px',
-                }}>{member.major}</p>
-              )}
+                color: colors.primary,
+                fontWeight: '500',
+                marginBottom: '8px',
+              }}>{member.major}</p>
               <p style={{
                 fontSize: '13px',
                 color: colors.textMuted,
-                marginBottom: '12px',
               }}>{member.desc}</p>
-              {member.highlight && (
-                <p style={{
-                  fontSize: '12px',
-                  color: colors.primary,
-                  fontWeight: '500',
-                }}>{member.highlight}</p>
-              )}
             </div>
           ))}
-        </div>
-
-        {/* 지도교수 */}
-        <div style={{
-          marginTop: '40px',
-          background: 'white',
-          borderRadius: '16px',
-          padding: '24px 40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '20px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-        }}>
-          <span style={{ fontSize: '14px', color: colors.textLight }}>지도교수</span>
-          <span style={{ fontSize: '18px', fontWeight: '600', color: colors.text }}>유태우</span>
-          <span style={{ fontSize: '14px', color: colors.textLight }}>산학협력중점교수</span>
         </div>
       </div>
     </section>
@@ -2353,6 +2321,7 @@ const CTASection = () => {
             href={GOOGLE_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
+            className="btn-secondary"
             style={{
               display: 'block',
               width: '100%',
@@ -2483,7 +2452,7 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
             { label: '문의', href: '#contact' },
           ].map((item) => (
             <li key={item.label} style={{ marginBottom: '12px' }}>
-              <a href={item.href} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item.label}</a>
+              <a href={item.href} className="footer-link" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px', display: 'inline-block' }}>{item.label}</a>
             </li>
           ))}
         </ul>
@@ -2496,7 +2465,7 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
             { label: '팀 소개', href: '#team' },
           ].map((item) => (
             <li key={item.label} style={{ marginBottom: '12px' }}>
-              <a href={item.href} style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px' }}>{item.label}</a>
+              <a href={item.href} className="footer-link" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '14px', display: 'inline-block' }}>{item.label}</a>
             </li>
           ))}
         </ul>
@@ -2508,6 +2477,7 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
           <li style={{ marginBottom: '12px' }}>
             <button
               onClick={onOpenPrivacy}
+              className="footer-link"
               style={{
                 color: 'rgba(255,255,255,0.7)',
                 textDecoration: 'none',
@@ -2524,6 +2494,7 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
           <li style={{ marginBottom: '12px' }}>
             <button
               onClick={onOpenTerms}
+              className="footer-link"
               style={{
                 color: 'rgba(255,255,255,0.7)',
                 textDecoration: 'none',

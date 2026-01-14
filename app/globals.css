@@ -511,11 +511,17 @@ input, textarea, select {
 }
 
 /* ===== 반응형 애니메이션 조정 ===== */
+/* 사용자가 모션 감소를 선호하는 경우에도 핵심 UI 애니메이션은 유지 */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  /* 장식적 애니메이션만 비활성화 */
+  .animate-float,
+  .shimmer {
+    animation: none !important;
+  }
+
+  /* 전환 효과는 빠르게 유지 */
+  *:not(.hero-animation):not([class*="airCell"]):not([class*="board"]):not([class*="patient"]) {
+    transition-duration: 0.2s !important;
   }
 }
 

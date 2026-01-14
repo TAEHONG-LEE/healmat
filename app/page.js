@@ -244,6 +244,7 @@ const GNB = () => {
   const navItems = [
     { label: '제품 소개', href: '#product' },
     { label: '기술', href: '#technology' },
+    { label: 'FAQ', href: '#faq' },
     { label: '팀 소개', href: '#team' },
     { label: '문의', href: '#contact' },
   ];
@@ -2402,6 +2403,174 @@ const CTASection = () => {
   );
 };
 
+// FAQ 섹션
+const FAQSection = () => {
+  const { isMobile } = useResponsive();
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    {
+      question: '힐매트는 어떤 환자에게 적합한가요?',
+      answer: '힐매트는 장기 와병 환자, 척수 손상 환자, 뇌졸중 후 마비 환자, 고령으로 인한 거동 불편 환자 등 스스로 체위 변환이 어려운 모든 분들께 적합합니다. 특히 욕창 예방이 필요하거나, 보호자의 체위 변환 부담을 줄이고자 하는 경우에 효과적입니다.'
+    },
+    {
+      question: '기존 침대에 설치할 수 있나요?',
+      answer: '네, 힐매트는 기존 병원용 침대나 가정용 침대 위에 간단히 설치할 수 있도록 설계되었습니다. 별도의 공사나 침대 교체 없이 매트리스 형태로 올려놓기만 하면 됩니다.'
+    },
+    {
+      question: '70도 자세 변환이 안전한가요?',
+      answer: '힐매트의 70도 자세 변환은 의료 가이드라인에 따라 설계되었습니다. 급격한 움직임이 아닌 점진적인 공기압 조절로 부드럽게 자세가 변환되며, 환자의 안전을 최우선으로 고려했습니다. 또한 낙상 방지를 위한 안전 가드도 함께 제공됩니다.'
+    },
+    {
+      question: '자세 변환 주기를 조절할 수 있나요?',
+      answer: '네, 의료진의 권고에 따라 30분~4시간 사이에서 자세 변환 주기를 자유롭게 설정할 수 있습니다. 기본 설정은 욕창 예방 가이드라인에 따른 2시간 주기입니다.'
+    },
+    {
+      question: '소음이 심하지 않나요?',
+      answer: '힐매트는 저소음 공압 시스템을 적용하여 환자의 수면을 방해하지 않습니다. 작동 시 발생하는 소음은 40dB 이하로, 도서관 수준의 조용한 소리입니다.'
+    },
+    {
+      question: '제품 가격과 구매 방법이 궁금합니다.',
+      answer: '힐매트의 가격은 사용 환경과 필요한 기능에 따라 상담 후 안내드리고 있습니다. 상단의 "상담 신청" 버튼을 통해 문의해주시면, 담당자가 자세한 제품 설명과 함께 가격을 안내해드립니다. 병원/요양시설 대량 구매 시 별도 할인이 적용됩니다.'
+    },
+    {
+      question: 'A/S 및 보증 기간은 어떻게 되나요?',
+      answer: '힐매트는 제품 구매일로부터 2년간 무상 A/S를 제공합니다. 제품 문제 발생 시 전문 서비스 기사가 방문하여 점검 및 수리를 진행합니다. 소모품(에어셀 등)은 별도로 구매 가능합니다.'
+    },
+  ];
+
+  return (
+    <section id="faq" style={{
+      padding: isMobile ? '60px 20px' : '120px 60px',
+      background: colors.background,
+    }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <h2 style={{
+          fontSize: isMobile ? '24px' : '40px',
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: '20px',
+          color: colors.text,
+        }}>
+          자주 묻는 <span style={{ color: colors.primary }}>질문</span>
+        </h2>
+        <p style={{
+          fontSize: isMobile ? '14px' : '18px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: isMobile ? '32px' : '60px',
+        }}>
+          힐매트에 대해 궁금하신 점을 확인해보세요
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              style={{
+                background: 'white',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                transition: 'box-shadow 0.3s ease',
+              }}
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                style={{
+                  width: '100%',
+                  padding: isMobile ? '20px' : '24px 32px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
+              >
+                <span style={{
+                  fontSize: isMobile ? '15px' : '18px',
+                  fontWeight: '600',
+                  color: openIndex === index ? colors.primary : colors.text,
+                  paddingRight: '16px',
+                  transition: 'color 0.3s ease',
+                }}>
+                  {faq.question}
+                </span>
+                <span style={{
+                  fontSize: '24px',
+                  color: colors.primary,
+                  transform: openIndex === index ? 'rotate(45deg)' : 'rotate(0)',
+                  transition: 'transform 0.3s ease',
+                  flexShrink: 0,
+                }}>
+                  +
+                </span>
+              </button>
+              <div
+                id={`faq-answer-${index}`}
+                style={{
+                  maxHeight: openIndex === index ? '500px' : '0',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.3s ease, padding 0.3s ease',
+                }}
+              >
+                <p style={{
+                  padding: isMobile ? '0 20px 20px' : '0 32px 24px',
+                  fontSize: isMobile ? '14px' : '16px',
+                  color: colors.textLight,
+                  lineHeight: '1.7',
+                }}>
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 추가 문의 안내 */}
+        <div style={{
+          marginTop: '48px',
+          textAlign: 'center',
+          padding: '32px',
+          background: 'white',
+          borderRadius: '16px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+        }}>
+          <p style={{
+            fontSize: isMobile ? '15px' : '18px',
+            color: colors.text,
+            marginBottom: '16px',
+          }}>
+            더 궁금한 점이 있으신가요?
+          </p>
+          <a
+            href={GOOGLE_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{
+              display: 'inline-block',
+              padding: '14px 32px',
+              background: colors.primary,
+              color: 'white',
+              borderRadius: '10px',
+              fontSize: '16px',
+              fontWeight: '600',
+              textDecoration: 'none',
+            }}
+          >
+            1:1 문의하기
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Footer
 const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
   const { isMobile } = useResponsive();
@@ -2449,6 +2618,7 @@ const Footer = ({ onOpenPrivacy, onOpenTerms }) => {
           {[
             { label: '제품 소개', href: '#product' },
             { label: '기술', href: '#technology' },
+            { label: 'FAQ', href: '#faq' },
             { label: '문의', href: '#contact' },
           ].map((item) => (
             <li key={item.label} style={{ marginBottom: '12px' }}>
@@ -2546,6 +2716,7 @@ export default function HealMatLandingPage() {
       <SocialProofSection />
       <TeamSection />
       <CTASection />
+      <FAQSection />
       <Footer
         onOpenPrivacy={() => setPrivacyOpen(true)}
         onOpenTerms={() => setTermsOpen(true)}

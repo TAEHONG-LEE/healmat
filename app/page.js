@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // 반응형 미디어 쿼리 훅 - 일반적으로 많이 사용하는 방법
 const useMediaQuery = (query) => {
@@ -25,6 +25,34 @@ const useResponsive = () => {
   const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
   const isDesktop = useMediaQuery('(min-width: 1025px)');
   return { isMobile, isTablet, isDesktop };
+};
+
+// 숫자 카운트업 훅
+const useCountUp = (end, duration = 2000, start = 0) => {
+  const [count, setCount] = useState(start);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let startTime = null;
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      // easeOutQuart for smooth deceleration
+      const easeOut = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(easeOut * (end - start) + start));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [hasStarted, end, duration, start]);
+
+  return { count, startAnimation: () => setHasStarted(true), hasStarted };
 };
 
 // 컬러 시스템
@@ -406,6 +434,46 @@ const GNB = () => {
 // Hero 섹션
 const HeroSection = () => {
   const { isMobile, isTablet } = useResponsive();
+  const { count: degreeCount, startAnimation, hasStarted } = useCountUp(70, 2500, 0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [countComplete, setCountComplete] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    // 컴포넌트 마운트 후 애니메이션 시작
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+      startAnimation();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 카운트 완료 감지
+  useEffect(() => {
+    if (degreeCount === 70 && !countComplete) {
+      setCountComplete(true);
+    }
+  }, [degreeCount, countComplete]);
+
+  // 마우스 움직임 추적
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // 화면 중앙을 기준으로 -1 ~ 1 범위로 정규화
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      setMousePosition({ x, y });
+    };
+
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [isMobile]);
+
+  // 패럴랙스 계산 함수 (depth: 움직임 정도)
+  const getParallax = (depth) => ({
+    transform: `translate(${mousePosition.x * depth}px, ${mousePosition.y * depth}px)`,
+  });
 
   return (
   <section id="product" style={{
@@ -413,8 +481,98 @@ const HeroSection = () => {
     display: 'flex',
     alignItems: 'center',
     padding: isMobile ? '80px 20px 40px' : isTablet ? '100px 40px 60px' : '100px 60px 60px',
-    background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
+    background: `linear-gradient(135deg, ${colors.background} 0%, #d4ede8 25%, #E8F5F3 50%, #d4ede8 75%, ${colors.background} 100%)`,
+    backgroundSize: '400% 400%',
+    animation: 'heroGradient 15s ease infinite',
+    position: 'relative',
+    overflow: 'hidden',
   }}>
+    {/* 배경 인터랙티브 도형들 - 마우스에 반응 */}
+    <div style={{
+      position: 'absolute',
+      top: '10%',
+      left: '5%',
+      width: '80px',
+      height: '80px',
+      background: colors.primary,
+      borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
+      opacity: 0.15,
+      transition: 'transform 0.3s ease-out',
+      ...getParallax(30),
+    }} />
+    <div style={{
+      position: 'absolute',
+      top: '60%',
+      left: '10%',
+      width: '60px',
+      height: '60px',
+      background: colors.secondary,
+      borderRadius: '50%',
+      opacity: 0.12,
+      transition: 'transform 0.4s ease-out',
+      ...getParallax(-20),
+    }} />
+    <div style={{
+      position: 'absolute',
+      top: '20%',
+      right: '8%',
+      width: '100px',
+      height: '100px',
+      background: colors.accent,
+      borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+      opacity: 0.1,
+      transition: 'transform 0.35s ease-out',
+      ...getParallax(40),
+    }} />
+    <div style={{
+      position: 'absolute',
+      bottom: '15%',
+      right: '15%',
+      width: '50px',
+      height: '50px',
+      background: colors.primary,
+      borderRadius: '50%',
+      opacity: 0.14,
+      transition: 'transform 0.45s ease-out',
+      ...getParallax(-25),
+    }} />
+    {/* 추가 도형들 - 더 깊은 레이어 */}
+    <div style={{
+      position: 'absolute',
+      top: '40%',
+      left: '25%',
+      width: '40px',
+      height: '40px',
+      background: colors.primary,
+      borderRadius: '50%',
+      opacity: 0.08,
+      transition: 'transform 0.5s ease-out',
+      ...getParallax(50),
+    }} />
+    <div style={{
+      position: 'absolute',
+      top: '75%',
+      right: '30%',
+      width: '70px',
+      height: '70px',
+      background: colors.secondary,
+      borderRadius: '40% 60% 60% 40% / 60% 40% 60% 40%',
+      opacity: 0.08,
+      transition: 'transform 0.55s ease-out',
+      ...getParallax(-35),
+    }} />
+    <div style={{
+      position: 'absolute',
+      top: '5%',
+      right: '35%',
+      width: '30px',
+      height: '30px',
+      background: colors.accent,
+      borderRadius: '50%',
+      opacity: 0.1,
+      transition: 'transform 0.4s ease-out',
+      ...getParallax(20),
+    }} />
     <div style={{
       maxWidth: '1400px',
       margin: '0 auto',
@@ -646,15 +804,69 @@ const HeroSection = () => {
           color: colors.text,
           marginBottom: isMobile ? '16px' : '24px',
         }}>
-          <span style={{ color: colors.primary }}>70도</span> 자동 자세 변환,<br />
-          이제 욕창 걱정 없이<br />
-          편안하게
+          {/* Line 1 - 카운트업 애니메이션 + 70도 강조 */}
+          <span style={{
+            display: 'block',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+            transitionDelay: '0s',
+          }}>
+            <span style={{
+              color: colors.primary,
+              display: 'inline-block',
+              fontSize: isMobile ? '42px' : isTablet ? '60px' : '76px',
+              fontWeight: '800',
+              minWidth: isMobile ? '80px' : '130px',
+              animation: countComplete ? 'numberPop 0.5s ease-out, numberGlow 2s ease-in-out infinite' : 'none',
+              textShadow: countComplete ? '0 0 30px rgba(46, 125, 110, 0.4)' : 'none',
+              transition: 'text-shadow 0.3s ease',
+              position: 'relative',
+            }}>
+              {degreeCount}
+              <span style={{
+                fontSize: isMobile ? '32px' : isTablet ? '44px' : '56px',
+                fontWeight: '700',
+              }}>°</span>
+            </span>
+            <span style={{
+              display: isMobile ? 'block' : 'inline',
+              marginLeft: isMobile ? '0' : '8px',
+              marginTop: isMobile ? '-8px' : '0',
+            }}>
+              자동 자세 변환,
+            </span>
+          </span>
+          {/* Line 2 */}
+          <span style={{
+            display: 'block',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+            transitionDelay: '0.15s',
+          }}>
+            이제 욕창 걱정 없이
+          </span>
+          {/* Line 3 */}
+          <span style={{
+            display: 'block',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+            transitionDelay: '0.3s',
+          }}>
+            편안하게
+          </span>
         </h1>
         <p style={{
           fontSize: isMobile ? '15px' : '20px',
           color: colors.textLight,
           marginBottom: isMobile ? '24px' : '40px',
           lineHeight: '1.6',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+          transitionDelay: '0.45s',
         }}>
           오리가미 기술로 완성한 스마트 욕창예방매트리스,<br />
           <strong style={{ color: colors.primary }}>힐매트</strong>
@@ -665,8 +877,12 @@ const HeroSection = () => {
           marginBottom: isMobile ? '24px' : '40px',
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: isMobile ? 'stretch' : 'flex-start',
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+          transitionDelay: '0.6s',
         }}>
-          <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary animate-fadeInUp" style={{
+          <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{
             padding: isMobile ? '14px 24px' : '18px 36px',
             background: colors.primary,
             color: 'white',
@@ -678,9 +894,8 @@ const HeroSection = () => {
             boxShadow: '0 8px 24px rgba(46, 125, 110, 0.3)',
             textDecoration: 'none',
             textAlign: 'center',
-            animationDelay: '0.3s',
           }}>제품 상담 신청하기</a>
-          <a href="#video" className="btn-outline animate-fadeInUp" style={{
+          <a href="#video" className="btn-outline" style={{
             padding: isMobile ? '14px 24px' : '18px 36px',
             background: 'transparent',
             color: colors.primary,
@@ -694,17 +909,16 @@ const HeroSection = () => {
             justifyContent: 'center',
             gap: '8px',
             textDecoration: 'none',
-            animationDelay: '0.4s',
           }}>제품 동작 과정 보기</a>
         </div>
-        {/* 신뢰 배지 */}
+        {/* 신뢰 배지 - 순차 등장 */}
         <div style={{
           display: 'flex',
           gap: isMobile ? '8px' : '12px',
           flexWrap: 'wrap',
           justifyContent: isMobile ? 'center' : 'flex-start',
         }}>
-          {['IP 디딤돌 특허 프로그램', '충남대 RISE 창업동아리', '프로토타입 개발 완료'].map((badge) => (
+          {['IP 디딤돌 특허 프로그램', '충남대 RISE 창업동아리', '프로토타입 개발 완료'].map((badge, index) => (
             <span key={badge} className="badge-hover" style={{
               padding: isMobile ? '6px 12px' : '8px 16px',
               background: 'rgba(46, 125, 110, 0.1)',
@@ -713,6 +927,10 @@ const HeroSection = () => {
               color: colors.primary,
               fontWeight: '500',
               cursor: 'default',
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.9)',
+              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              transitionDelay: `${0.8 + index * 0.1}s`,
             }}>{badge}</span>
           ))}
         </div>
@@ -824,79 +1042,137 @@ const ProblemSection = () => {
 };
 
 
-// 단계별 캐러셀 컴포넌트 - HeroSection 애니메이션 값 기반
-const StepCarousel = ({ steps }) => {
+// 전체 화면 스크롤 캐러셀 - 스크롤 하이재킹 방식
+// 각 STEP이 100vh를 차지하며, 스크롤 시 단계가 전환됨
+const useFullScreenScroll = (containerRef, stepsCount) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+
+      const container = containerRef.current;
+      const rect = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const windowHeight = window.innerHeight;
+
+      // 스크롤 가능한 영역 = 컨테이너 높이 - 화면 높이
+      const scrollableHeight = containerHeight - windowHeight;
+
+      // 컨테이너 상단이 화면 상단에 닿은 후의 스크롤 진행도
+      const scrolled = -rect.top;
+      const scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
+
+      setProgress(scrollProgress);
+
+      // 단계 계산
+      const step = Math.min(
+        stepsCount - 1,
+        Math.floor(scrollProgress * stepsCount)
+      );
+      setCurrentStep(step);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [containerRef, stepsCount]);
+
+  return { currentStep, setCurrentStep, progress };
+};
+
+// 전체 화면 STEP 섹션 컴포넌트
+const FullScreenStepSection = () => {
+  const containerRef = useRef(null);
   const { isMobile } = useResponsive();
 
-  const goToPrev = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1));
-  };
+  // 각 단계별 시각화 설정
+  const steps = [
+    {
+      step: '1',
+      title: '평평한 상태',
+      desc: '환자가 힐매트 위에 누워있는 초기 상태입니다. 양쪽 에어셀이 동일한 높이를 유지합니다.',
+      color: colors.textLight,
+      image: '/images/healmat1.jpg',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+      leftBoardRotate: '0deg',
+      patientRotate: '0deg',
+    },
+    {
+      step: '2',
+      title: '에어셀 팽창 시작',
+      desc: '공기펌프가 작동하면서 한쪽 에어셀이 팽창하기 시작합니다. 오리가미 구조가 접히기 시작합니다.',
+      color: colors.accent,
+      image: '/images/healmat2.png',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 40%)',
+      leftBoardRotate: '-20deg',
+      patientRotate: '-10deg',
+    },
+    {
+      step: '3',
+      title: '최대 기울기 도달',
+      desc: '에어셀이 최대로 팽창하면서 상판이 70도까지 기울어집니다. 환자의 체위가 자연스럽게 변환됩니다.',
+      color: colors.secondary,
+      image: '/images/healmat3.png',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
+      leftBoardRotate: '-40deg',
+      patientRotate: '-20deg',
+    },
+    {
+      step: '4',
+      title: '원위치 복귀',
+      desc: '공기가 빠지면서 상판이 평평하게 돌아오고, 반대쪽으로 동일한 과정이 반복됩니다.',
+      color: colors.primary,
+      image: '/images/healmat1.jpg',
+      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+      leftBoardRotate: '0deg',
+      patientRotate: '0deg',
+    },
+  ];
 
-  const goToNext = () => {
-    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0));
-  };
-
+  const { currentStep, setCurrentStep, progress } = useFullScreenScroll(containerRef, steps.length);
   const item = steps[currentStep];
 
-  return (
-    <div style={{
-      background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
-      borderRadius: isMobile ? '16px' : '24px',
-      padding: isMobile ? '20px' : '50px',
-      marginBottom: isMobile ? '32px' : '60px',
-    }}>
-      <h3 style={{ fontSize: '24px', fontWeight: '700', color: colors.text, marginBottom: '30px', textAlign: 'center' }}>
-        힐매트 구조 & 작동 원리
-      </h3>
-
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '20px',
-        maxWidth: '1000px',
-        margin: '0 auto',
+  // 모바일에서는 일반 캐러셀로 동작
+  if (isMobile) {
+    return (
+      <section id="step-section" style={{
+        padding: '60px 20px',
+        background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
       }}>
-        {/* 왼쪽 화살표 */}
-        <button
-          onClick={goToPrev}
-          className="btn-circle"
-          style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            border: 'none',
-            background: 'white',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            color: colors.primary,
-            flexShrink: 0,
-          }}
-        >
-          ←
-        </button>
+        <h2 style={{
+          fontSize: '24px',
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: '16px',
+          color: colors.text,
+        }}>
+          힐매트 <span style={{ color: colors.primary }}>구조 & 작동 원리</span>
+        </h2>
+        <p style={{
+          fontSize: '15px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: '32px',
+        }}>
+          오리가미 기술 기반의 혁신적인 체위 변환
+        </p>
 
-        {/* 카드 */}
+        {/* 모바일용 간단한 캐러셀 */}
         <div style={{
-          flex: 1,
           background: 'white',
           borderRadius: '20px',
-          padding: '32px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
+          padding: '24px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.08)',
         }}>
-          {/* 단계 표시 */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            marginBottom: '20px',
+            gap: '8px',
+            marginBottom: '16px',
           }}>
             <div style={{
-              display: 'inline-block',
               background: item.color,
               color: 'white',
               padding: '6px 14px',
@@ -904,284 +1180,515 @@ const StepCarousel = ({ steps }) => {
               fontSize: '13px',
               fontWeight: '700',
             }}>STEP {item.step}</div>
-            <h4 style={{ fontSize: '18px', fontWeight: '700', color: colors.text }}>{item.title}</h4>
+            <h4 style={{ fontSize: '16px', fontWeight: '700', color: colors.text }}>{item.title}</h4>
           </div>
 
-          {/* 다이어그램 + 실제 이미지 2단 레이아웃 */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-            gap: isMobile ? '16px' : '20px',
-            marginBottom: '20px',
-          }}>
-
-          {/* 시각화 다이어그램 - HeroSection과 동일한 구조 */}
           <div style={{
             position: 'relative',
-            height: '220px',
-            background: colors.background,
+            height: '200px',
+            background: '#f8f9fa',
             borderRadius: '12px',
-            marginBottom: '20px',
             overflow: 'hidden',
+            marginBottom: '16px',
           }}>
-            {/* 베이스 프레임 (하판) */}
-            <div style={{
-              position: 'absolute',
-              bottom: '20px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '280px',
-              height: '18px',
-              background: 'linear-gradient(180deg, #4a4a4a 0%, #333 100%)',
-              borderRadius: '3px',
-              boxShadow: '0 3px 8px rgba(0,0,0,0.3)',
-            }} />
-
-            {/* 왼쪽 에어셀 - 삼각 기둥 */}
-            <div style={{
-              position: 'absolute',
-              bottom: '38px',
-              left: 'calc(50% - 140px)',
-              width: '125px',
-              height: '130px',
-              background: `linear-gradient(to right, ${colors.secondary} 0%, #e67a35 100%)`,
-              clipPath: item.leftAirCell,
-              boxShadow: '0 3px 10px rgba(255, 140, 66, 0.4)',
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              paddingBottom: '6px',
-              transition: 'clip-path 0.5s ease',
-            }}>
-              <span style={{ color: 'white', fontSize: '10px', fontWeight: '700' }}>AIR</span>
-            </div>
-
-            {/* 오른쪽 에어셀 - 평평 (고정) */}
-            <div style={{
-              position: 'absolute',
-              bottom: '38px',
-              right: 'calc(50% - 140px)',
-              width: '125px',
-              height: '130px',
-              background: `linear-gradient(135deg, ${colors.accent} 0%, #4a8fb3 100%)`,
-              clipPath: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
-              boxShadow: '0 2px 6px rgba(91, 163, 198, 0.3)',
-            }} />
-
-            {/* 왼쪽 상판 - 에어셀 위에 밀착 */}
-            <div style={{
-              position: 'absolute',
-              bottom: '70px',
-              left: 'calc(50% - 140px)',
-              width: '125px',
-              height: '10px',
-              transformOrigin: 'right center',
-              transform: `rotate(${item.leftBoardRotate})`,
-              transition: 'transform 0.5s ease',
-            }}>
-              <div style={{
+            <img
+              src={item.image}
+              alt={item.title}
+              style={{
                 width: '100%',
                 height: '100%',
-                background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
-                borderRadius: '5px 2px 2px 5px',
-                boxShadow: '0 3px 10px rgba(46, 125, 110, 0.4)',
-              }} />
-            </div>
+                objectFit: 'cover',
+              }}
+            />
+          </div>
 
-            {/* 오른쪽 상판 - 평평 (고정) */}
-            <div style={{
-              position: 'absolute',
-              bottom: '70px',
-              right: 'calc(50% - 140px)',
-              width: '125px',
-              height: '10px',
-              background: `linear-gradient(180deg, #3d9d8a 0%, ${colors.primary} 100%)`,
-              borderRadius: '2px 5px 5px 2px',
-              boxShadow: '0 2px 8px rgba(46, 125, 110, 0.2)',
-            }} />
+          <p style={{ fontSize: '14px', color: colors.textLight, lineHeight: '1.6', marginBottom: '20px' }}>
+            {item.desc}
+          </p>
 
-            {/* 중앙 힌지 */}
-            <div style={{
-              position: 'absolute',
-              bottom: '65px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '16px',
-              height: '18px',
-              background: 'linear-gradient(180deg, #666 0%, #444 100%)',
-              borderRadius: '3px',
-              boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
-              zIndex: 10,
+          {/* 네비게이션 버튼 */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+            <button
+              onClick={() => setCurrentStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1))}
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: 'white',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                fontSize: '20px',
+                color: colors.primary,
+              }}
+            >←</button>
+            <button
+              onClick={() => setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : 0))}
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: 'none',
+                background: colors.primary,
+                boxShadow: '0 2px 8px rgba(46,125,110,0.3)',
+                fontSize: '20px',
+                color: 'white',
+              }}
+            >→</button>
+          </div>
+
+          {/* 인디케이터 */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
+            {steps.map((_, i) => (
+              <div
+                key={i}
+                onClick={() => setCurrentStep(i)}
+                style={{
+                  width: i === currentStep ? '24px' : '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                  background: i === currentStep ? colors.primary : '#ddd',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // 데스크톱: 전체 화면 스크롤 하이재킹
+  const scrollHeight = `${steps.length * 100}vh`;
+
+  return (
+    <div
+      ref={containerRef}
+      id="step-section"
+      style={{
+        height: scrollHeight,
+        position: 'relative',
+      }}
+    >
+      {/* Sticky 컨테이너 - 전체 화면에 고정 */}
+      <div style={{
+        position: 'sticky',
+        top: '0',
+        height: '100vh',
+        background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}>
+        {/* 상단 프로그레스 바 */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: 'rgba(46, 125, 110, 0.1)',
+          zIndex: 100,
+        }}>
+          <div style={{
+            width: `${progress * 100}%`,
+            height: '100%',
+            background: `linear-gradient(90deg, ${colors.primary}, ${colors.secondary})`,
+            transition: 'width 0.15s ease-out',
+          }} />
+        </div>
+
+        {/* 메인 콘텐츠 영역 - 네비바 높이(80px) 고려 */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: '80px',
+          paddingBottom: '40px',
+          paddingLeft: '60px',
+          paddingRight: '60px',
+        }}>
+          {/* 섹션 제목 */}
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <h2 style={{
+              fontSize: '44px',
+              fontWeight: '700',
+              color: colors.text,
+              marginBottom: '12px',
             }}>
+              힐매트 <span style={{ color: colors.primary }}>구조 & 작동 원리</span>
+            </h2>
+            <p style={{
+              fontSize: '18px',
+              color: colors.textLight,
+            }}>
+              오리가미 기술 기반의 혁신적인 체위 변환 과정
+            </p>
+          </div>
+
+          {/* STEP 카운터 */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: 'white',
+            padding: '12px 24px',
+            borderRadius: '30px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            marginBottom: '40px',
+          }}>
+            <span style={{ fontSize: '14px', color: colors.textLight, fontWeight: '500' }}>STEP</span>
+            <span style={{
+              fontSize: '32px',
+              fontWeight: '700',
+              color: colors.primary,
+              minWidth: '40px',
+              textAlign: 'center',
+            }}>{currentStep + 1}</span>
+            <span style={{ fontSize: '14px', color: colors.textLight }}>/ {steps.length}</span>
+          </div>
+
+          {/* 메인 콘텐츠 카드 */}
+          <div style={{
+            width: '100%',
+            maxWidth: '1200px',
+            background: 'white',
+            borderRadius: '32px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
+            padding: '48px',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '48px',
+            alignItems: 'center',
+          }}>
+            {/* 왼쪽: 다이어그램 */}
+            <div style={{
+              position: 'relative',
+              height: '400px',
+              background: `linear-gradient(135deg, ${colors.background} 0%, #E8F5F3 100%)`,
+              borderRadius: '24px',
+              overflow: 'hidden',
+            }}>
+              {/* STEP 배지 */}
               <div style={{
                 position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '8px',
-                height: '8px',
-                background: '#333',
-                borderRadius: '50%',
-              }} />
-            </div>
-
-            {/* 환자 - 힌지 중앙 위치 */}
-            <div style={{
-              position: 'absolute',
-              bottom: '80px',
-              left: '50%',
-              transform: `translateX(-50%) rotate(${item.patientRotate})`,
-              transformOrigin: 'right center',
-              zIndex: 5,
-              transition: 'transform 0.5s ease',
-            }}>
-              {/* 몸통 */}
-              <div style={{
-                width: '230px',
-                height: '40px',
-                background: 'linear-gradient(180deg, #8fb5b0 0%, #6a9590 100%)',
-                borderRadius: '20px',
-                position: 'relative',
-                boxShadow: '0 3px 10px rgba(0,0,0,0.15)',
+                top: '20px',
+                left: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                zIndex: 20,
               }}>
-                {/* 머리 */}
+                <div style={{
+                  background: item.color,
+                  color: 'white',
+                  padding: '8px 18px',
+                  borderRadius: '14px',
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                }}>STEP {item.step}</div>
+                <h4 style={{
+                  fontSize: '20px',
+                  fontWeight: '700',
+                  color: colors.text,
+                  background: 'rgba(255,255,255,0.9)',
+                  padding: '8px 16px',
+                  borderRadius: '12px',
+                }}>{item.title}</h4>
+              </div>
+
+              {/* 각도 표시 (STEP 3, 4) */}
+              {(item.step === '3' || item.step === '4') && (
                 <div style={{
                   position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                  top: '20px',
+                  right: '20px',
+                  background: 'rgba(255,255,255,0.95)',
+                  borderRadius: '12px',
+                  padding: '12px 18px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  zIndex: 20,
                 }}>
-                  {/* 얼굴 (위쪽, 밝은 색) */}
-                  <div style={{ width: '100%', height: '50%', background: '#f0dfd0' }} />
-                  {/* 머리카락 (아래쪽, 어두운 색) */}
-                  <div style={{ width: '100%', height: '50%', background: '#3d2b1f' }} />
+                  <div style={{ fontSize: '12px', color: colors.textLight }}>최대 기울기</div>
+                  <div style={{ fontSize: '28px', fontWeight: '700', color: colors.secondary }}>70°</div>
+                </div>
+              )}
+
+              {/* 다이어그램 - 확대된 버전 */}
+              <div style={{
+                position: 'absolute',
+                bottom: '30px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '380px',
+              }}>
+                {/* 베이스 프레임 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '0',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '380px',
+                  height: '24px',
+                  background: 'linear-gradient(180deg, #4a4a4a 0%, #333 100%)',
+                  borderRadius: '4px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                }} />
+
+                {/* 왼쪽 에어셀 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '24px',
+                  left: '0',
+                  width: '170px',
+                  height: '180px',
+                  background: `linear-gradient(to right, ${colors.secondary} 0%, #e67a35 100%)`,
+                  clipPath: item.leftAirCell,
+                  boxShadow: '0 4px 15px rgba(255, 140, 66, 0.4)',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  paddingBottom: '10px',
+                  transition: 'clip-path 0.6s ease',
+                }}>
+                  <span style={{ color: 'white', fontSize: '14px', fontWeight: '700' }}>AIR</span>
+                </div>
+
+                {/* 오른쪽 에어셀 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '24px',
+                  right: '0',
+                  width: '170px',
+                  height: '180px',
+                  background: `linear-gradient(135deg, ${colors.accent} 0%, #4a8fb3 100%)`,
+                  clipPath: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
+                  boxShadow: '0 3px 10px rgba(91, 163, 198, 0.3)',
+                }} />
+
+                {/* 왼쪽 상판 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '68px',
+                  left: '0',
+                  width: '170px',
+                  height: '14px',
+                  transformOrigin: 'right center',
+                  transform: `rotate(${item.leftBoardRotate})`,
+                  transition: 'transform 0.6s ease',
+                }}>
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    background: `linear-gradient(180deg, ${colors.primary} 0%, ${colors.primaryDark} 100%)`,
+                    borderRadius: '7px 3px 3px 7px',
+                    boxShadow: '0 4px 15px rgba(46, 125, 110, 0.4)',
+                  }} />
+                </div>
+
+                {/* 오른쪽 상판 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '68px',
+                  right: '0',
+                  width: '170px',
+                  height: '14px',
+                  background: `linear-gradient(180deg, #3d9d8a 0%, ${colors.primary} 100%)`,
+                  borderRadius: '3px 7px 7px 3px',
+                  boxShadow: '0 3px 12px rgba(46, 125, 110, 0.2)',
+                }} />
+
+                {/* 중앙 힌지 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '60px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '24px',
+                  height: '28px',
+                  background: 'linear-gradient(180deg, #666 0%, #444 100%)',
+                  borderRadius: '4px',
+                  boxShadow: '0 3px 8px rgba(0,0,0,0.3)',
+                  zIndex: 10,
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '12px',
+                    height: '12px',
+                    background: '#333',
+                    borderRadius: '50%',
+                  }} />
+                </div>
+
+                {/* 환자 */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '82px',
+                  left: '50%',
+                  transform: `translateX(-50%) rotate(${item.patientRotate})`,
+                  transformOrigin: 'right center',
+                  zIndex: 5,
+                  transition: 'transform 0.6s ease',
+                }}>
+                  <div style={{
+                    width: '300px',
+                    height: '55px',
+                    background: 'linear-gradient(180deg, #8fb5b0 0%, #6a9590 100%)',
+                    borderRadius: '28px',
+                    position: 'relative',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.15)',
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      width: '46px',
+                      height: '46px',
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      boxShadow: '0 3px 10px rgba(0,0,0,0.1)',
+                    }}>
+                      <div style={{ width: '100%', height: '50%', background: '#f0dfd0' }} />
+                      <div style={{ width: '100%', height: '50%', background: '#3d2b1f' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* 각도 표시 (STEP 3, 4에서만) */}
-            {(item.step === '3' || item.step === '4') && (
-              <div style={{
-                position: 'absolute',
-                top: '12px',
-                left: '12px',
-                background: 'rgba(255,255,255,0.95)',
-                borderRadius: '8px',
-                padding: '8px 12px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                zIndex: 15,
-              }}>
-                <div style={{ fontSize: '10px', color: colors.textLight }}>최대 기울기</div>
-                <div style={{ fontSize: '18px', fontWeight: '700', color: colors.secondary }}>70°</div>
-              </div>
-            )}
-          </div>
-
-            {/* 실제 힐매트 이미지 */}
+            {/* 오른쪽: 실제 이미지 + 설명 */}
             <div style={{
-              position: 'relative',
-              height: '220px',
-              background: '#f8f9fa',
-              borderRadius: '12px',
-              overflow: 'hidden',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'column',
+              gap: '24px',
             }}>
-              <img
-                src={item.image}
-                alt={item.title}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  borderRadius: '12px',
-                }}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div style="text-align:center;color:#999;font-size:14px;">이미지 로딩 중...</div>';
-                }}
-              />
+              {/* 실제 이미지 */}
               <div style={{
-                position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-                background: 'rgba(0,0,0,0.6)',
-                color: 'white',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '11px',
+                position: 'relative',
+                height: '280px',
+                background: '#f8f9fa',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
               }}>
-                실제 제품 이미지
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: '16px',
+                  right: '16px',
+                  background: 'rgba(0,0,0,0.6)',
+                  color: 'white',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                }}>
+                  실제 제품 이미지
+                </div>
+              </div>
+
+              {/* 설명 */}
+              <div style={{
+                background: colors.background,
+                borderRadius: '16px',
+                padding: '24px',
+              }}>
+                <p style={{
+                  fontSize: '18px',
+                  color: colors.text,
+                  lineHeight: '1.8',
+                }}>
+                  {item.desc}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* 설명 텍스트 */}
-          <p style={{ fontSize: '15px', color: colors.textLight, lineHeight: '1.7', textAlign: 'center' }}>{item.desc}</p>
+          {/* 단계 인디케이터 */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '12px',
+            marginTop: '32px',
+          }}>
+            {steps.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentStep(i)}
+                style={{
+                  width: i === currentStep ? '40px' : '12px',
+                  height: '12px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  background: i === currentStep ? colors.primary : 'rgba(46,125,110,0.2)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* 오른쪽 화살표 */}
-        <button
-          onClick={goToNext}
-          className="btn-circle"
-          style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            border: 'none',
-            background: colors.primary,
-            boxShadow: '0 4px 12px rgba(46, 125, 110, 0.3)',
-            cursor: 'pointer',
+        {/* 스크롤 힌트 */}
+        {currentStep < steps.length - 1 && (
+          <div style={{
+            position: 'absolute',
+            bottom: '30px',
+            left: '50%',
+            transform: 'translateX(-50%)',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            color: 'white',
-            flexShrink: 0,
-          }}
-        >
-          →
-        </button>
-      </div>
+            animation: 'scrollBounce 2s ease-in-out infinite',
+          }}>
+            <span style={{ fontSize: '13px', color: colors.textMuted, marginBottom: '6px' }}>
+              스크롤하여 다음 단계 확인
+            </span>
+            <span style={{ fontSize: '24px', color: colors.primary }}>↓</span>
+          </div>
+        )}
 
-      {/* 단계 인디케이터 */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '10px',
-        marginTop: '30px',
-      }}>
-        {steps.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentStep(i)}
-            style={{
-              width: i === currentStep ? '32px' : '10px',
-              height: '10px',
-              borderRadius: '5px',
-              border: 'none',
-              background: i === currentStep ? colors.primary : '#ccc',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-          />
-        ))}
+        {/* 마지막 단계에서 다음 섹션 안내 */}
+        {currentStep === steps.length - 1 && (
+          <div style={{
+            position: 'absolute',
+            bottom: '30px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            animation: 'scrollBounce 2s ease-in-out infinite',
+          }}>
+            <span style={{ fontSize: '13px', color: colors.textMuted, marginBottom: '6px' }}>
+              계속 스크롤하여 더 많은 정보 확인
+            </span>
+            <span style={{ fontSize: '24px', color: colors.primary }}>↓</span>
+          </div>
+        )}
       </div>
-
-      <p style={{ textAlign: 'center', fontSize: '13px', color: colors.textMuted, marginTop: '16px' }}>
-        화살표 버튼을 눌러 단계별 작동 원리를 확인하세요
-      </p>
     </div>
   );
 };
 
-// Solution 섹션
+// Solution 섹션 - 기능 소개 (Step 섹션은 별도의 전체화면 컴포넌트로 분리됨)
 const SolutionSection = () => {
   const { isMobile } = useResponsive();
   const features = [
@@ -1199,61 +1706,6 @@ const SolutionSection = () => {
       icon: '🛡️',
       title: '맞춤형 의료 패드',
       desc: '뼈 돌출 부위 자동 상승/하강, 욕창 위험 부위 집중 보호',
-    },
-  ];
-
-  // 각 단계별 시각화 설정 - HeroSection 애니메이션 값 기반
-  // HeroSection: 에어셀 clipPath: 75% → 5%, 상판: 0deg → 40deg, 환자: 0deg → 20deg
-  const steps = [
-    {
-      step: '1',
-      title: '평평한 상태',
-      desc: '환자가 힐매트 위에 누워있는 초기 상태입니다. 양쪽 에어셀이 동일한 높이를 유지합니다.',
-      color: colors.textLight,
-      image: '/images/healmat1.jpg',
-      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
-      leftBoardRotate: '0deg',
-      patientRotate: '0deg',
-    },
-    {
-      step: '2',
-      title: '에어셀 팽창 시작',
-      desc: '한쪽 에어셀에 공기가 주입되기 시작하여 삼각 기둥 형태로 팽창합니다.',
-      color: colors.secondary,
-      image: '/images/healmat2.png',
-      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 40%)',
-      leftBoardRotate: '20deg',
-      patientRotate: '10deg',
-    },
-    {
-      step: '3',
-      title: '상판 기울어짐',
-      desc: '팽창한 에어셀이 접이식 상판을 밀어올려 최대 70°까지 기울어집니다.',
-      color: colors.primary,
-      image: '/images/healmat2.png',
-      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
-      leftBoardRotate: '40deg',
-      patientRotate: '20deg',
-    },
-    {
-      step: '4',
-      title: '체위 변환 완료',
-      desc: '기울어진 상판으로 인해 환자가 자연스럽게 옆으로 돌아눕게 됩니다.',
-      color: colors.accent,
-      image: '/images/healmat3.png',
-      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
-      leftBoardRotate: '40deg',
-      patientRotate: '20deg',
-    },
-    {
-      step: '5',
-      title: '원위치 복귀',
-      desc: '공기가 빠지면서 상판이 평평하게 돌아오고, 반대쪽으로 동일한 과정이 반복됩니다.',
-      color: colors.primary,
-      image: '/images/healmat1.jpg',
-      leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 75%)',
-      leftBoardRotate: '0deg',
-      patientRotate: '0deg',
     },
   ];
 
@@ -1280,9 +1732,6 @@ const SolutionSection = () => {
         }}>
           오리가미 기술 기반의 혁신적인 욕창예방 솔루션
         </p>
-
-        {/* 힐매트 구조 & 작동 원리 - 캐러셀 */}
-        <StepCarousel steps={steps} />
 
         {/* 기능 카드 */}
         <div style={{
@@ -2852,6 +3301,7 @@ export default function HealMatLandingPage() {
       <GNB />
       <HeroSection />
       <ProblemSection />
+      <FullScreenStepSection />
       <SolutionSection />
       <TestResultSection />
       <HowItWorksSection />

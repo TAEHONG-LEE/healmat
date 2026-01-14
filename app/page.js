@@ -2022,8 +2022,43 @@ const SocialProofSection = () => {
   const stats = [
     { num: '9명', label: '의료진 인터뷰', icon: '👨‍⚕️' },
     { num: '10명', label: '보호자 인터뷰', icon: '👨‍👩‍👦' },
-    { num: '3개', label: '의료 네트워크', icon: '🏥' },
+    { num: '4개', label: '협력 의료기관', icon: '🏥' },
     { num: '1건', label: '특허 출원 예정', icon: '📋' },
+  ];
+
+  const partners = [
+    {
+      type: '대학병원',
+      name: '충남권역 대학병원',
+      period: '2024.10 ~ 11',
+      content: '간호학과 9명 심층 인터뷰 진행',
+      detail: '욕창 케어 현장 니즈 파악 및 제품 요구사항 수집',
+      icon: '🏥',
+    },
+    {
+      type: '종합병원',
+      name: '대전 소재 종합병원',
+      period: '2024.02 ~',
+      content: '의료 봉사 활동 및 네트워크 구축',
+      detail: '현장 의료진과의 지속적 협력 관계 유지',
+      icon: '🩺',
+    },
+    {
+      type: '의료조합',
+      name: '지역 의료생활협동조합',
+      period: '2025.02',
+      content: '환자 인터뷰 및 필드 테스트 네트워크',
+      detail: '실제 사용 환경에서의 제품 검증 협력',
+      icon: '🤝',
+    },
+    {
+      type: '의료기기 유통',
+      name: '군산 의료기기 납품업체',
+      period: '2025.02',
+      content: '제품 유통 파트너십 협의',
+      detail: 'B2B 판로 개척 및 MOU 체결 추진 중',
+      icon: '📦',
+    },
   ];
 
   const timeline = [
@@ -2069,6 +2104,115 @@ const SocialProofSection = () => {
           ))}
         </div>
 
+        {/* 협력 기관 섹션 */}
+        <h3 style={{
+          fontSize: isMobile ? '20px' : '28px',
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: '16px',
+          color: colors.text,
+        }}>협력 <span style={{ color: colors.primary }}>의료기관</span></h3>
+        <p style={{
+          fontSize: '16px',
+          color: colors.textLight,
+          textAlign: 'center',
+          marginBottom: '40px',
+        }}>현장의 목소리를 담아 제품을 완성합니다</p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: isMobile ? '16px' : '24px',
+          marginBottom: '80px',
+        }}>
+          {partners.map((partner, i) => (
+            <div key={i} className="card-glow" style={{
+              background: colors.background,
+              borderRadius: '16px',
+              padding: isMobile ? '24px' : '32px',
+              border: '1px solid rgba(46, 125, 110, 0.1)',
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '16px',
+              }}>
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  background: 'white',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  flexShrink: 0,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                }}>{partner.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px',
+                  }}>
+                    <span style={{
+                      padding: '4px 10px',
+                      background: colors.primary,
+                      color: 'white',
+                      borderRadius: '12px',
+                      fontSize: '11px',
+                      fontWeight: '600',
+                    }}>{partner.type}</span>
+                    <span style={{
+                      fontSize: '12px',
+                      color: colors.textLight,
+                    }}>{partner.period}</span>
+                  </div>
+                  <h4 style={{
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    color: colors.text,
+                    marginBottom: '8px',
+                  }}>{partner.name}</h4>
+                  <p style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: colors.primary,
+                    marginBottom: '4px',
+                  }}>{partner.content}</p>
+                  <p style={{
+                    fontSize: '13px',
+                    color: colors.textLight,
+                    lineHeight: '1.5',
+                  }}>{partner.detail}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 협력 요약 메시지 */}
+        <div style={{
+          background: `linear-gradient(135deg, ${colors.primary}10, ${colors.accent}10)`,
+          borderRadius: '16px',
+          padding: isMobile ? '24px' : '32px',
+          textAlign: 'center',
+          marginBottom: '80px',
+          border: `1px solid ${colors.primary}20`,
+        }}>
+          <p style={{
+            fontSize: isMobile ? '16px' : '18px',
+            color: colors.text,
+            lineHeight: '1.8',
+            fontWeight: '500',
+          }}>
+            &ldquo;힐매트는 <span style={{ color: colors.primary, fontWeight: '700' }}>4개 의료기관</span>과의 협력을 통해<br />
+            <span style={{ color: colors.primary, fontWeight: '700' }}>19명</span>의 의료진 및 보호자 인터뷰를 바탕으로<br />
+            실제 현장의 니즈를 반영한 제품을 개발하고 있습니다.&rdquo;
+          </p>
+        </div>
+
         {/* 타임라인 */}
         <h3 style={{
           fontSize: '24px',
@@ -2083,6 +2227,7 @@ const SocialProofSection = () => {
           justifyContent: 'space-between',
           position: 'relative',
           padding: '0 40px',
+          overflowX: isMobile ? 'auto' : 'visible',
         }}>
           <div style={{
             position: 'absolute',
@@ -2094,7 +2239,7 @@ const SocialProofSection = () => {
             opacity: 0.3,
           }} />
           {timeline.map((item, i) => (
-            <div key={i} style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+            <div key={i} style={{ textAlign: 'center', position: 'relative', zIndex: 1, minWidth: isMobile ? '80px' : 'auto' }}>
               <div style={{
                 width: '40px',
                 height: '40px',

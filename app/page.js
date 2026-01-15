@@ -1087,7 +1087,8 @@ const FullScreenStepSection = () => {
   const containerRef = useRef(null);
   const { isMobile } = useResponsive();
 
-  // 각 단계별 시각화 설정
+  // 각 단계별 시각화 설정 - HeroSection 애니메이션과 동일한 방향
+  // 왼쪽 에어셀이 팽창하면서 왼쪽 상판이 위로 올라감 (양수 회전)
   const steps = [
     {
       step: '1',
@@ -1106,8 +1107,8 @@ const FullScreenStepSection = () => {
       color: colors.accent,
       image: '/images/healmat2.png',
       leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 40%)',
-      leftBoardRotate: '-20deg',
-      patientRotate: '-10deg',
+      leftBoardRotate: '20deg',
+      patientRotate: '10deg',
     },
     {
       step: '3',
@@ -1116,8 +1117,8 @@ const FullScreenStepSection = () => {
       color: colors.secondary,
       image: '/images/healmat3.png',
       leftAirCell: 'polygon(0% 100%, 100% 100%, 100% 75%, 0% 5%)',
-      leftBoardRotate: '-40deg',
-      patientRotate: '-20deg',
+      leftBoardRotate: '40deg',
+      patientRotate: '20deg',
     },
     {
       step: '4',

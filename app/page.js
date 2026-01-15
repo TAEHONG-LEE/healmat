@@ -1626,7 +1626,7 @@ const FullScreenStepSection = () => {
             display: 'flex',
             justifyContent: 'center',
             gap: '12px',
-            marginTop: '32px',
+            marginTop: '24px',
           }}>
             {steps.map((_, i) => (
               <button
@@ -1644,45 +1644,23 @@ const FullScreenStepSection = () => {
               />
             ))}
           </div>
+
+          {/* 스크롤 힌트 - 인디케이터 아래에 배치 */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: '20px',
+            animation: 'scrollBounce 2s ease-in-out infinite',
+          }}>
+            <span style={{ fontSize: '13px', color: colors.textMuted, marginBottom: '6px' }}>
+              {currentStep < steps.length - 1
+                ? '스크롤하여 다음 단계 확인'
+                : '계속 스크롤하여 더 많은 정보 확인'}
+            </span>
+            <span style={{ fontSize: '24px', color: colors.primary }}>↓</span>
+          </div>
         </div>
-
-        {/* 스크롤 힌트 */}
-        {currentStep < steps.length - 1 && (
-          <div style={{
-            position: 'absolute',
-            bottom: '30px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            animation: 'scrollBounce 2s ease-in-out infinite',
-          }}>
-            <span style={{ fontSize: '13px', color: colors.textMuted, marginBottom: '6px' }}>
-              스크롤하여 다음 단계 확인
-            </span>
-            <span style={{ fontSize: '24px', color: colors.primary }}>↓</span>
-          </div>
-        )}
-
-        {/* 마지막 단계에서 다음 섹션 안내 */}
-        {currentStep === steps.length - 1 && (
-          <div style={{
-            position: 'absolute',
-            bottom: '30px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            animation: 'scrollBounce 2s ease-in-out infinite',
-          }}>
-            <span style={{ fontSize: '13px', color: colors.textMuted, marginBottom: '6px' }}>
-              계속 스크롤하여 더 많은 정보 확인
-            </span>
-            <span style={{ fontSize: '24px', color: colors.primary }}>↓</span>
-          </div>
-        )}
       </div>
     </div>
   );
